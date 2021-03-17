@@ -1,0 +1,10 @@
+{
+  "name": "prestashop-module",
+  "description": "PrestaShop module by Dartmoon",
+  "repository": "git@github.com:dartmoon-io/prestashop-module.git",
+  "author": "Dartmoon <hello@dartmoon.io>",
+  "license": "MIT",
+  "dependencies": {
+    "laravel-mix": "^6.0.13"
+  }
+}
