@@ -1,0 +1,22 @@
+{
+    "name": "dartmoon/prestashop-module",
+    "description": "Boilerplate for PrestaShop module",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dartmoon",
+            "email": "hello@dartmoon.io",
+            "homepage": "https://dartmoon.io"
+        },
+        {
+            "name": "Alessandro Pasqualini",
+            "email": "alessandro@dartmoon.io"
+        }
+    ],
+    "require": {},
+    "require-dev": {},
+    "config": {
+        "sort-packages": true
+    }
+}
