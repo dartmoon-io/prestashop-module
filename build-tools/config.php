@@ -2,12 +2,12 @@
 
 return [
     // The name of the module. This name will be used to create the zip and must be the same as the main php file
-    'name' => 'drtnpoc',
+    'name' => 'MY_MODULE_NAME',
 
     // The common scoper config
     'scoper' => [
         // The prefix configuration. If a non null value will be used, a random prefix will be generated.
-        'prefix' => 'Dartmoon\\DrtnPOC\\Vendor',
+        'prefix' => 'Dartmoon\\MY_MODULE_NAME\\Vendor',
 
         // PHP-Scoper's goal is to make sure that all code for a project lies in a distinct PHP namespace. However, you
         // may want to share a common API between the bundled code of your PHAR and the consumer code. For example if
