@@ -63,7 +63,9 @@ class MY_MODULE_NAME extends Module
 
     public function install()
     {
-        return parent::install();
+        return parent::install() &&
+            $this->registerHook('header') &&
+            $this->registerHook('backOfficeHeader');
     }
 
     public function uninstall()
@@ -192,5 +194,25 @@ class MY_MODULE_NAME extends Module
         foreach (array_keys($form_values) as $key) {
             Configuration::updateValue($key, Tools::getValue($key));
         }
+    }
+
+    /**
+    * Add the CSS & JavaScript files you want to be loaded in the BO.
+    */
+    public function hookBackOfficeHeader()
+    {
+        if (Tools::getValue('module_name') == $this->name) {
+            $this->context->controller->addJS($this->_path.'views/js/back.js');
+            $this->context->controller->addCSS($this->_path.'views/css/back.css');
+        }
+    }
+
+    /**
+     * Add the CSS & JavaScript files you want to be added on the FO.
+     */
+    public function hookHeader()
+    {
+        $this->context->controller->addJS($this->_path.'/views/js/front.js');
+        $this->context->controller->addCSS($this->_path.'/views/css/front.css');
     }
 }
