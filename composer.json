@@ -1,7 +1,7 @@
 {
     "name": "dartmoon/prestashop-module",
-    "description": "Boilerplate for PrestaShop module",
-    "type": "project",
+    "description": "PrestaShop module by Dartmoon",
+    "type": "prestashop-module",
     "license": "MIT",
     "authors": [
         {
@@ -14,9 +14,47 @@
             "email": "alessandro@dartmoon.io"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "Dartmoon\\MY_MODULE_NAME\\": "src/"
+        },
+        "classmap": [
+            "vendor", 
+            "vendor_prefixed"
+        ]
+    },
     "require": {},
     "require-dev": {},
     "config": {
         "sort-packages": true
+    },
+    "scripts": {
+        "pre-install-cmd": [
+            "@create-vendor-dirs"
+        ],
+        "pre-update-cmd": [
+            "@create-vendor-dirs"
+        ],
+        "post-install-cmd": [
+            "@prefix-vendor"
+        ],
+        "post-update-cmd": [
+            "@prefix-vendor"
+        ],
+        "create-vendor-dirs": [
+            "[ ! -d \"vendor\" ] && mkdir vendor_prefixed || true",
+            "[ ! -d \"vendor_prefixed\" ] && mkdir vendor_prefixed || true"
+        ],
+        "install-build-tools": [
+            "composer install --working-dir=build-tools --no-scripts -n --quiet"
+        ],
+        "prefix-vendor": [
+            "@install-build-tools",
+            "build-tools/vendor/bin/prefix-vendor"
+        ],
+        "build-module": [
+            "@install-build-tools",
+            "build-tools/vendor/bin/build-module"
+        ]
     }
 }
