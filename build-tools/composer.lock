@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fdbeebd7bd872030d23745a67ab944fc",
+    "content-hash": "623bed785289f931e4514954e49a97a2",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -81,16 +81,16 @@
         },
         {
             "name": "dartmoon/prestashop-build-tools",
-            "version": "v0.1.0",
+            "version": "v0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dartmoon-io/prestashop-build-tools.git",
-                "reference": "7b8d0e5c459037fbd959f72b8858c65fa409f882"
+                "reference": "43275949f71b5e2267c48105a33ffb27948b4c95"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dartmoon-io/prestashop-build-tools/zipball/7b8d0e5c459037fbd959f72b8858c65fa409f882",
-                "reference": "7b8d0e5c459037fbd959f72b8858c65fa409f882",
+                "url": "https://api.github.com/repos/dartmoon-io/prestashop-build-tools/zipball/43275949f71b5e2267c48105a33ffb27948b4c95",
+                "reference": "43275949f71b5e2267c48105a33ffb27948b4c95",
                 "shasum": ""
             },
             "require": {
@@ -123,9 +123,9 @@
             "description": "Set of tools to build PrestaShop Modules",
             "support": {
                 "issues": "https://github.com/dartmoon-io/prestashop-build-tools/issues",
-                "source": "https://github.com/dartmoon-io/prestashop-build-tools/tree/v0.1.0"
+                "source": "https://github.com/dartmoon-io/prestashop-build-tools/tree/v0.2.0"
             },
-            "time": "2021-03-16T18:10:37+00:00"
+            "time": "2021-03-19T08:18:13+00:00"
         },
         {
             "name": "humbug/php-scoper",

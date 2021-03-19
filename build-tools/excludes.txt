@@ -1,0 +1,8 @@
+.git/
+build-tools/
+vendor_prefixed/
+/composer.json
+/composer.lock
+.gitignore
+LICENSE
+README.md

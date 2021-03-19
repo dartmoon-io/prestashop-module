@@ -56,5 +56,11 @@
             "@install-build-tools",
             "build-tools/vendor/bin/build-module"
         ]
+    },
+    "extra": {
+        "build-tools": {
+            "name": "MY_MODULE_NAME",
+            "prefix": "Dartmoon\\MY_MODULE_NAME\\Vendor"
+        }
     }
 }
