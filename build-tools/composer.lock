@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "13fb8e628d0c8c64122b3dc199f1eb5f",
+    "content-hash": "fdbeebd7bd872030d23745a67ab944fc",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -81,7 +81,7 @@
         },
         {
             "name": "dartmoon/prestashop-build-tools",
-            "version": "v1.0.0",
+            "version": "v0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dartmoon-io/prestashop-build-tools.git",
@@ -123,7 +123,7 @@
             "description": "Set of tools to build PrestaShop Modules",
             "support": {
                 "issues": "https://github.com/dartmoon-io/prestashop-build-tools/issues",
-                "source": "https://github.com/dartmoon-io/prestashop-build-tools/tree/v1.0.0"
+                "source": "https://github.com/dartmoon-io/prestashop-build-tools/tree/v0.1.0"
             },
             "time": "2021-03-16T18:10:37+00:00"
         },
@@ -217,12 +217,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/JetBrains/phpstorm-stubs.git",
-                "reference": "5c2d08318c95ce2d8e6badbbb18fa2c726b9fadd"
+                "reference": "82e65fa85dd0d62585de992c7e423aebf2dc9c8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JetBrains/phpstorm-stubs/zipball/5c2d08318c95ce2d8e6badbbb18fa2c726b9fadd",
-                "reference": "5c2d08318c95ce2d8e6badbbb18fa2c726b9fadd",
+                "url": "https://api.github.com/repos/JetBrains/phpstorm-stubs/zipball/82e65fa85dd0d62585de992c7e423aebf2dc9c8a",
+                "reference": "82e65fa85dd0d62585de992c7e423aebf2dc9c8a",
                 "shasum": ""
             },
             "require-dev": {
@@ -258,7 +258,7 @@
             "support": {
                 "source": "https://github.com/JetBrains/phpstorm-stubs/tree/master"
             },
-            "time": "2021-03-17T16:38:46+00:00"
+            "time": "2021-03-19T05:45:32+00:00"
         },
         {
             "name": "nikic/php-parser",
