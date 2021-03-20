@@ -81,16 +81,16 @@
         },
         {
             "name": "dartmoon/prestashop-build-tools",
-            "version": "v0.2.0",
+            "version": "v0.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dartmoon-io/prestashop-build-tools.git",
-                "reference": "43275949f71b5e2267c48105a33ffb27948b4c95"
+                "reference": "f2d5ee995a0716ab78e5e7559757ecba6cf7863d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dartmoon-io/prestashop-build-tools/zipball/43275949f71b5e2267c48105a33ffb27948b4c95",
-                "reference": "43275949f71b5e2267c48105a33ffb27948b4c95",
+                "url": "https://api.github.com/repos/dartmoon-io/prestashop-build-tools/zipball/f2d5ee995a0716ab78e5e7559757ecba6cf7863d",
+                "reference": "f2d5ee995a0716ab78e5e7559757ecba6cf7863d",
                 "shasum": ""
             },
             "require": {
@@ -123,9 +123,9 @@
             "description": "Set of tools to build PrestaShop Modules",
             "support": {
                 "issues": "https://github.com/dartmoon-io/prestashop-build-tools/issues",
-                "source": "https://github.com/dartmoon-io/prestashop-build-tools/tree/v0.2.0"
+                "source": "https://github.com/dartmoon-io/prestashop-build-tools/tree/v0.2.1"
             },
-            "time": "2021-03-19T08:18:13+00:00"
+            "time": "2021-03-20T07:33:39+00:00"
         },
         {
             "name": "humbug/php-scoper",
@@ -217,12 +217,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/JetBrains/phpstorm-stubs.git",
-                "reference": "82e65fa85dd0d62585de992c7e423aebf2dc9c8a"
+                "reference": "777dfa15071f06aecdc895c722055b1edec50dac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JetBrains/phpstorm-stubs/zipball/82e65fa85dd0d62585de992c7e423aebf2dc9c8a",
-                "reference": "82e65fa85dd0d62585de992c7e423aebf2dc9c8a",
+                "url": "https://api.github.com/repos/JetBrains/phpstorm-stubs/zipball/777dfa15071f06aecdc895c722055b1edec50dac",
+                "reference": "777dfa15071f06aecdc895c722055b1edec50dac",
                 "shasum": ""
             },
             "require-dev": {
@@ -258,7 +258,7 @@
             "support": {
                 "source": "https://github.com/JetBrains/phpstorm-stubs/tree/master"
             },
-            "time": "2021-03-19T05:45:32+00:00"
+            "time": "2021-03-19T17:08:17+00:00"
         },
         {
             "name": "nikic/php-parser",
