@@ -2,3 +2,6 @@
 /vendor_prefixed
 /node_modules
 /build
+/views/js/*
+/views/css/*
+/views/mix-manifest.json
