@@ -41,7 +41,13 @@ return [
     // heart contents.
     //
     // For more see: https://github.com/humbug/php-scoper#patchers
-    'patchers' => [],
+    'patchers' => [
+        function (string $filePath, string $prefix, string $content) {
+            $content = str_replace($prefix . '\\Module', 'Module', $content); // Module class
+
+            return $content;
+        }
+    ],
 
     // PHP-Scoper's goal is to make sure that all code for a project lies in a distinct PHP namespace. However, you
     // may want to share a common API between the bundled code of your PHAR and the consumer code. For example if
@@ -53,9 +59,10 @@ return [
     //
     // Fore more see https://github.com/humbug/php-scoper#whitelist
     'whitelist' => [
-        'PrestaShop\PrestaShop\Adapter\Entity\*',
-        'PrestaShopBundle\Entity\Repository\*',
         'PrestaShop\PrestaShop\Adapter\*',
+        'PrestaShop\PrestaShop\Adapter\Entity\*',
+        'PrestaShopBundle\Entity\*',   
+        'PrestaShopBundle\Entity\Repository\*',
     ],
 
     // If `true` then the user defined constants belonging to the global namespace will not be prefixed.

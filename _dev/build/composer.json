@@ -1,6 +1,6 @@
 {
     "require": {
-        "dartmoon/prestashop-build-tools": "^0.2"
+        "dartmoon/prestashop-build-tools": "^0.3"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

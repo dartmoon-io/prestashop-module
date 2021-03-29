@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "623bed785289f931e4514954e49a97a2",
+    "content-hash": "945836f5106f23dd9d8ddc90c09e9524",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -81,16 +81,16 @@
         },
         {
             "name": "dartmoon/prestashop-build-tools",
-            "version": "v0.2.1",
+            "version": "v0.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dartmoon-io/prestashop-build-tools.git",
-                "reference": "f2d5ee995a0716ab78e5e7559757ecba6cf7863d"
+                "reference": "cec6e75c8ae5778cd143056b975fa754be4fc84f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dartmoon-io/prestashop-build-tools/zipball/f2d5ee995a0716ab78e5e7559757ecba6cf7863d",
-                "reference": "f2d5ee995a0716ab78e5e7559757ecba6cf7863d",
+                "url": "https://api.github.com/repos/dartmoon-io/prestashop-build-tools/zipball/cec6e75c8ae5778cd143056b975fa754be4fc84f",
+                "reference": "cec6e75c8ae5778cd143056b975fa754be4fc84f",
                 "shasum": ""
             },
             "require": {
@@ -123,9 +123,9 @@
             "description": "Set of tools to build PrestaShop Modules",
             "support": {
                 "issues": "https://github.com/dartmoon-io/prestashop-build-tools/issues",
-                "source": "https://github.com/dartmoon-io/prestashop-build-tools/tree/v0.2.1"
+                "source": "https://github.com/dartmoon-io/prestashop-build-tools/tree/v0.3.0"
             },
-            "time": "2021-03-20T07:33:39+00:00"
+            "time": "2021-03-29T14:49:59+00:00"
         },
         {
             "name": "humbug/php-scoper",
@@ -217,12 +217,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/JetBrains/phpstorm-stubs.git",
-                "reference": "777dfa15071f06aecdc895c722055b1edec50dac"
+                "reference": "e2b9f971a32fd81d9c4fde6029995197ad928e45"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JetBrains/phpstorm-stubs/zipball/777dfa15071f06aecdc895c722055b1edec50dac",
-                "reference": "777dfa15071f06aecdc895c722055b1edec50dac",
+                "url": "https://api.github.com/repos/JetBrains/phpstorm-stubs/zipball/e2b9f971a32fd81d9c4fde6029995197ad928e45",
+                "reference": "e2b9f971a32fd81d9c4fde6029995197ad928e45",
                 "shasum": ""
             },
             "require-dev": {
@@ -258,7 +258,7 @@
             "support": {
                 "source": "https://github.com/JetBrains/phpstorm-stubs/tree/master"
             },
-            "time": "2021-03-19T17:08:17+00:00"
+            "time": "2021-03-29T12:50:58+00:00"
         },
         {
             "name": "nikic/php-parser",
@@ -366,16 +366,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v4.4.20",
+            "version": "v4.4.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "c98349bda966c70d6c08b4cd8658377c94166492"
+                "reference": "1ba4560dbbb9fcf5ae28b61f71f49c678086cf23"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/c98349bda966c70d6c08b4cd8658377c94166492",
-                "reference": "c98349bda966c70d6c08b4cd8658377c94166492",
+                "url": "https://api.github.com/repos/symfony/console/zipball/1ba4560dbbb9fcf5ae28b61f71f49c678086cf23",
+                "reference": "1ba4560dbbb9fcf5ae28b61f71f49c678086cf23",
                 "shasum": ""
             },
             "require": {
@@ -435,7 +435,7 @@
             "description": "Eases the creation of beautiful and testable command line interfaces",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/console/tree/v4.4.20"
+                "source": "https://github.com/symfony/console/tree/v4.4.21"
             },
             "funding": [
                 {
@@ -451,20 +451,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-02-22T18:44:15+00:00"
+            "time": "2021-03-26T09:23:24+00:00"
         },
         {
             "name": "symfony/filesystem",
-            "version": "v4.4.20",
+            "version": "v4.4.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "715e7a531bdae109a828f9e91629e5b3b2926beb"
+                "reference": "940826c465be2690c9fae91b2793481e5cbd6834"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/715e7a531bdae109a828f9e91629e5b3b2926beb",
-                "reference": "715e7a531bdae109a828f9e91629e5b3b2926beb",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/940826c465be2690c9fae91b2793481e5cbd6834",
+                "reference": "940826c465be2690c9fae91b2793481e5cbd6834",
                 "shasum": ""
             },
             "require": {
@@ -497,7 +497,7 @@
             "description": "Provides basic utilities for the filesystem",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/filesystem/tree/v4.4.20"
+                "source": "https://github.com/symfony/filesystem/tree/v4.4.21"
             },
             "funding": [
                 {
@@ -513,7 +513,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-02-11T19:34:41+00:00"
+            "time": "2021-03-28T09:59:32+00:00"
         },
         {
             "name": "symfony/finder",

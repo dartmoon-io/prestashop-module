@@ -46,19 +46,19 @@
             "[ ! -d \"vendor_prefixed\" ] && mkdir vendor_prefixed || true"
         ],
         "install-build-tools": [
-            "composer install --working-dir=build-tools --no-scripts -n --quiet"
+            "composer install --working-dir=_dev/build --no-scripts -n --quiet"
         ],
         "prefix-vendor": [
             "@install-build-tools",
-            "build-tools/vendor/bin/prefix-vendor"
+            "_dev/build/vendor/bin/prefix-vendor"
         ],
         "build-module": [
             "@install-build-tools",
-            "build-tools/vendor/bin/build-module"
+            "_dev/build/vendor/bin/build-module"
         ]
     },
     "extra": {
-        "build-tools": {
+        "prestashop-module": {
             "name": "MY_MODULE_NAME",
             "prefix": "Dartmoon\\MY_MODULE_NAME\\Vendor"
         }
