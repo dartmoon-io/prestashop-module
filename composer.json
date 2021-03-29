@@ -53,6 +53,8 @@
             "_dev/build/vendor/bin/prefix-vendor"
         ],
         "build-module": [
+            "yarn",
+            "yarn mix --production",
             "@install-build-tools",
             "_dev/build/vendor/bin/build-module"
         ]

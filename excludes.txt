@@ -1,6 +1,7 @@
 .git/
 _dev/
 vendor_prefixed/
+node_modules/
 /composer.json
 /composer.lock
 /vendor/build-tools.txt
@@ -9,3 +10,7 @@ LICENSE
 README.md
 excludes.txt
 scoper.inc.php
+.nvmrc
+package.json
+yarn.lock
+webpack.mix.js
