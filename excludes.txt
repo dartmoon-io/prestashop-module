@@ -4,7 +4,7 @@ vendor_prefixed/
 node_modules/
 /composer.json
 /composer.lock
-/vendor/build-tools.txt
+/views/mix-manifest.json
 .gitignore
 LICENSE
 README.md
