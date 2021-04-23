@@ -47,6 +47,8 @@
         "build-module": [
             "yarn",
             "yarn mix --production",
+            "@composer install --no-dev --no-scripts --quiet",
+            "@prefix-vendor",
             "vendor-bin/prestashop-build-tools/vendor/bin/build-module -a"
         ]
     },
