@@ -1,5 +1,6 @@
+.pbt/
 /vendor
-/vendor_prefixed
+/vendor-bin/**/vendor
 /node_modules
 /build
 /views/js/*

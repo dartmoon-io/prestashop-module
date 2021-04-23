@@ -1,10 +1,11 @@
 .git/
+.pbt/
 _dev/
-vendor_prefixed/
+vendor-bin/
 node_modules/
-/composer.json
-/composer.lock
-/views/mix-manifest.json
+composer.json
+composer.lock
+views/mix-manifest.json
 .gitignore
 LICENSE
 README.md

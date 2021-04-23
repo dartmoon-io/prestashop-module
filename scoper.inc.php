@@ -17,6 +17,7 @@ return [
             ->exclude([
                 'bin',
                 'composer',
+                'bamarni'
             ])
             ->name([
                 '*.php', 

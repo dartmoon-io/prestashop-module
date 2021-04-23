@@ -4,8 +4,61 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7c0fbfee375f66572bf9360f824d72f5",
+    "content-hash": "4c1cd67b69cc826d5d3de22a121fdb8f",
     "packages": [
+        {
+            "name": "adbario/php-dot-notation",
+            "version": "2.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/adbario/php-dot-notation.git",
+                "reference": "eee4fc81296531e6aafba4c2bbccfc5adab1676e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/adbario/php-dot-notation/zipball/eee4fc81296531e6aafba4c2bbccfc5adab1676e",
+                "reference": "eee4fc81296531e6aafba4c2bbccfc5adab1676e",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=5.5"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.0|^5.0|^6.0",
+                "squizlabs/php_codesniffer": "^3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Adbar\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Riku Särkinen",
+                    "email": "riku@adbar.io"
+                }
+            ],
+            "description": "PHP dot notation access to arrays",
+            "homepage": "https://github.com/adbario/php-dot-notation",
+            "keywords": [
+                "ArrayAccess",
+                "dotnotation"
+            ],
+            "support": {
+                "issues": "https://github.com/adbario/php-dot-notation/issues",
+                "source": "https://github.com/adbario/php-dot-notation/tree/2.x"
+            },
+            "time": "2019-01-01T23:59:15+00:00"
+        },
         {
             "name": "composer/package-versions-deprecated",
             "version": "1.11.99.1",
@@ -81,21 +134,25 @@
         },
         {
             "name": "dartmoon/prestashop-build-tools",
-            "version": "v0.4.0",
+            "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dartmoon-io/prestashop-build-tools.git",
-                "reference": "10247711aa60c0dd90faf7b72fdfcbcf9a6d1bc3"
+                "reference": "b1f80c80f43fb706baaaaf0597bc1d1e29966d21"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dartmoon-io/prestashop-build-tools/zipball/10247711aa60c0dd90faf7b72fdfcbcf9a6d1bc3",
-                "reference": "10247711aa60c0dd90faf7b72fdfcbcf9a6d1bc3",
+                "url": "https://api.github.com/repos/dartmoon-io/prestashop-build-tools/zipball/b1f80c80f43fb706baaaaf0597bc1d1e29966d21",
+                "reference": "b1f80c80f43fb706baaaaf0597bc1d1e29966d21",
                 "shasum": ""
             },
             "require": {
+                "adbario/php-dot-notation": "^2.2",
                 "humbug/php-scoper": "^0.14.0",
-                "symfony/finder": "^4.0"
+                "symfony/console": "^4",
+                "symfony/filesystem": "^4",
+                "symfony/finder": "^4",
+                "symfony/process": "^4"
             },
             "require-dev": {
                 "symfony/var-dumper": "^5.2"
@@ -105,6 +162,11 @@
                 "bin/build-module"
             ],
             "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Dartmoon\\PrestaShopBuildTools\\": "src/"
+                }
+            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
@@ -124,9 +186,9 @@
             "description": "Set of tools to build PrestaShop Modules",
             "support": {
                 "issues": "https://github.com/dartmoon-io/prestashop-build-tools/issues",
-                "source": "https://github.com/dartmoon-io/prestashop-build-tools/tree/v0.4.0"
+                "source": "https://github.com/dartmoon-io/prestashop-build-tools/tree/develop"
             },
-            "time": "2021-04-21T09:10:04+00:00"
+            "time": "2021-04-23T21:24:24+00:00"
         },
         {
             "name": "humbug/php-scoper",
@@ -899,6 +961,67 @@
             "time": "2021-01-07T16:49:33+00:00"
         },
         {
+            "name": "symfony/process",
+            "version": "v4.4.20",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/process.git",
+                "reference": "7e950b6366d4da90292c2e7fa820b3c1842b965a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/process/zipball/7e950b6366d4da90292c2e7fa820b3c1842b965a",
+                "reference": "7e950b6366d4da90292c2e7fa820b3c1842b965a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Process\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Executes commands in sub-processes",
+            "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/process/tree/v4.4.20"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2021-01-27T09:09:26+00:00"
+        },
+        {
             "name": "symfony/service-contracts",
             "version": "v2.4.0",
             "source": {
@@ -981,7 +1104,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "dartmoon/prestashop-build-tools": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
