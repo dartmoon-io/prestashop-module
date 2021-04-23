@@ -6,3 +6,4 @@
 /views/js/*
 /views/css/*
 /views/mix-manifest.json
+/.php_cs.cache
