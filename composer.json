@@ -42,12 +42,12 @@
             "@prefix-vendor"
         ],
         "prefix-vendor": [
-            "vendor-bin/pbt/vendor/bin/prefix-vendor"
+            "vendor-bin/prestashop-build-tools/vendor/bin/prefix-vendor"
         ],
         "build-module": [
             "yarn",
             "yarn mix --production",
-            "vendor-bin/pbt/vendor/bin/build-module -a"
+            "vendor-bin/prestashop-build-tools/vendor/bin/build-module -a"
         ]
     },
     "extra": {
