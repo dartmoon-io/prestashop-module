@@ -23,7 +23,6 @@
 *  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *  International Registered Trademark & Property of PrestaShop SA
 */
-
 if (!defined('_PS_VERSION_')) {
     exit;
 }
@@ -46,7 +45,7 @@ class MY_MODULE_NAME extends Module
         $this->author = 'Dartmoon';
         $this->need_instance = 1;
 
-        /**
+        /*
          * Set $this->bootstrap to true if your module is compliant with bootstrap (PrestaShop 1.6)
          */
         $this->bootstrap = true;
@@ -58,9 +57,8 @@ class MY_MODULE_NAME extends Module
 
         $this->confirmUninstall = $this->l('Are you sure you want to uninstall this module?');
 
-        $this->ps_versions_compliancy = array('min' => '1.7', 'max' => _PS_VERSION_);
+        $this->ps_versions_compliancy = ['min' => '1.7', 'max' => _PS_VERSION_];
         $this->requirements = [
-            //
         ];
     }
 
@@ -81,18 +79,18 @@ class MY_MODULE_NAME extends Module
      */
     public function getContent()
     {
-        /**
+        /*
          * If values have been submitted in the form, process.
          */
-        if (((bool)Tools::isSubmit('submitMY_MODULE_NAMEModule')) == true) {
+        if (((bool) Tools::isSubmit('submitMY_MODULE_NAMEModule')) == true) {
             $this->postProcess();
         }
 
         $this->context->smarty->assign('module_dir', $this->_path);
 
-        $output = $this->context->smarty->fetch($this->local_path.'views/templates/admin/configure.tpl');
+        $output = $this->context->smarty->fetch($this->local_path . 'views/templates/admin/configure.tpl');
 
-        return $output.$this->renderForm();
+        return $output . $this->renderForm();
     }
 
     /**
@@ -111,16 +109,16 @@ class MY_MODULE_NAME extends Module
         $helper->identifier = $this->identifier;
         $helper->submit_action = 'submitMY_MODULE_NAMEModule';
         $helper->currentIndex = $this->context->link->getAdminLink('AdminModules', false)
-            .'&configure='.$this->name.'&tab_module='.$this->tab.'&module_name='.$this->name;
+            . '&configure=' . $this->name . '&tab_module=' . $this->tab . '&module_name=' . $this->name;
         $helper->token = Tools::getAdminTokenLite('AdminModules');
 
-        $helper->tpl_vars = array(
+        $helper->tpl_vars = [
             'fields_value' => $this->getConfigFormValues(), /* Add values for your inputs */
             'languages' => $this->context->controller->getLanguages(),
             'id_language' => $this->context->language->id,
-        );
+        ];
 
-        return $helper->generateForm(array($this->getConfigForm()));
+        return $helper->generateForm([$this->getConfigForm()]);
     }
 
     /**
@@ -128,51 +126,51 @@ class MY_MODULE_NAME extends Module
      */
     protected function getConfigForm()
     {
-        return array(
-            'form' => array(
-                'legend' => array(
+        return [
+            'form' => [
+                'legend' => [
                 'title' => $this->l('Settings'),
                 'icon' => 'icon-cogs',
-                ),
-                'input' => array(
-                    array(
+                ],
+                'input' => [
+                    [
                         'type' => 'switch',
                         'label' => $this->l('Live mode'),
                         'name' => 'MY_MODULE_NAME_LIVE_MODE',
                         'is_bool' => true,
                         'desc' => $this->l('Use this module in live mode'),
-                        'values' => array(
-                            array(
+                        'values' => [
+                            [
                                 'id' => 'active_on',
                                 'value' => true,
-                                'label' => $this->l('Enabled')
-                            ),
-                            array(
+                                'label' => $this->l('Enabled'),
+                            ],
+                            [
                                 'id' => 'active_off',
                                 'value' => false,
-                                'label' => $this->l('Disabled')
-                            )
-                        ),
-                    ),
-                    array(
+                                'label' => $this->l('Disabled'),
+                            ],
+                        ],
+                    ],
+                    [
                         'col' => 3,
                         'type' => 'text',
                         'prefix' => '<i class="icon icon-envelope"></i>',
                         'desc' => $this->l('Enter a valid email address'),
                         'name' => 'MY_MODULE_NAME_ACCOUNT_EMAIL',
                         'label' => $this->l('Email'),
-                    ),
-                    array(
+                    ],
+                    [
                         'type' => 'password',
                         'name' => 'MY_MODULE_NAME_ACCOUNT_PASSWORD',
                         'label' => $this->l('Password'),
-                    ),
-                ),
-                'submit' => array(
+                    ],
+                ],
+                'submit' => [
                     'title' => $this->l('Save'),
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**
@@ -180,11 +178,11 @@ class MY_MODULE_NAME extends Module
      */
     protected function getConfigFormValues()
     {
-        return array(
+        return [
             'MY_MODULE_NAME_LIVE_MODE' => Configuration::get('MY_MODULE_NAME_LIVE_MODE', true),
             'MY_MODULE_NAME_ACCOUNT_EMAIL' => Configuration::get('MY_MODULE_NAME_ACCOUNT_EMAIL', 'contact@prestashop.com'),
             'MY_MODULE_NAME_ACCOUNT_PASSWORD' => Configuration::get('MY_MODULE_NAME_ACCOUNT_PASSWORD', null),
-        );
+        ];
     }
 
     /**
@@ -200,13 +198,13 @@ class MY_MODULE_NAME extends Module
     }
 
     /**
-    * Add the CSS & JavaScript files you want to be loaded in the BO.
-    */
+     * Add the CSS & JavaScript files you want to be loaded in the BO.
+     */
     public function hookBackOfficeHeader()
     {
         if (Tools::getValue('module_name') == $this->name) {
-            $this->context->controller->addJS($this->_path.'views/js/back.js');
-            $this->context->controller->addCSS($this->_path.'views/css/back.css');
+            $this->context->controller->addJS($this->_path . 'views/js/back.js');
+            $this->context->controller->addCSS($this->_path . 'views/css/back.css');
         }
     }
 
@@ -215,7 +213,7 @@ class MY_MODULE_NAME extends Module
      */
     public function hookHeader()
     {
-        $this->context->controller->addJS($this->_path.'/views/js/front.js');
-        $this->context->controller->addCSS($this->_path.'/views/css/front.css');
+        $this->context->controller->addJS($this->_path . '/views/js/front.js');
+        $this->context->controller->addCSS($this->_path . '/views/css/front.css');
     }
 }
