@@ -15,3 +15,6 @@ scoper.inc.php
 package.json
 yarn.lock
 webpack.mix.js
+.php_cs.cache
+.php_cs.dist
+copyright.txt
