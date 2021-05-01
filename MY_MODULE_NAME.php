@@ -29,7 +29,10 @@ if (!defined('_PS_VERSION_')) {
 }
 
 // Require the autoload
-require_once(__DIR__ . '/vendor/autoload.php');
+$autoloadPath = dirname(__FILE__) . '/vendor/autoload.php';
+if (file_exists($autoloadPath)) {
+    require_once $autoloadPath;
+}
 
 class MY_MODULE_NAME extends Module
 {
