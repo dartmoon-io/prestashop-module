@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4c1cd67b69cc826d5d3de22a121fdb8f",
+    "content-hash": "cbf3a924f527f864f55b2af37a6c2b73",
     "packages": [
         {
             "name": "adbario/php-dot-notation",
@@ -134,16 +134,16 @@
         },
         {
             "name": "dartmoon/prestashop-build-tools",
-            "version": "dev-develop",
+            "version": "v0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dartmoon-io/prestashop-build-tools.git",
-                "reference": "935164f404dc9d8ddf1ca1ae7e0dde8354c61aea"
+                "reference": "ce62e52a8cde6af7ca17d64c17d583d59c92d17c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dartmoon-io/prestashop-build-tools/zipball/935164f404dc9d8ddf1ca1ae7e0dde8354c61aea",
-                "reference": "935164f404dc9d8ddf1ca1ae7e0dde8354c61aea",
+                "url": "https://api.github.com/repos/dartmoon-io/prestashop-build-tools/zipball/ce62e52a8cde6af7ca17d64c17d583d59c92d17c",
+                "reference": "ce62e52a8cde6af7ca17d64c17d583d59c92d17c",
                 "shasum": ""
             },
             "require": {
@@ -160,8 +160,7 @@
             },
             "bin": [
                 "bin/prefix-vendor",
-                "bin/build-module",
-                "bin/header-stamp"
+                "bin/build-module"
             ],
             "type": "library",
             "autoload": {
@@ -188,9 +187,9 @@
             "description": "Set of tools to build PrestaShop Modules",
             "support": {
                 "issues": "https://github.com/dartmoon-io/prestashop-build-tools/issues",
-                "source": "https://github.com/dartmoon-io/prestashop-build-tools/tree/develop"
+                "source": "https://github.com/dartmoon-io/prestashop-build-tools/tree/v0.5.0"
             },
-            "time": "2021-05-01T09:02:50+00:00"
+            "time": "2021-05-01T09:20:43+00:00"
         },
         {
             "name": "humbug/php-scoper",
@@ -1157,9 +1156,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "dartmoon/prestashop-build-tools": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
