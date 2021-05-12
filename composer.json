@@ -19,7 +19,8 @@
             "Dartmoon\\MY_MODULE_NAME\\": "src/"
         },
         "classmap": [
-            "vendor"
+            "vendor",
+            "vendor-prefixed"
         ]
     },
     "require": {},
@@ -30,8 +31,11 @@
         "sort-packages": true
     },
     "scripts": {
-        "bin": [
-            "echo 'bin not installed'"
+        "pre-install-cmd": [
+            "@make-vendor-dir"
+        ],
+        "pre-update-cmd": [
+            "@make-vendor-dir"
         ],
         "post-install-cmd": [
             "@composer bin all install --ansi",
@@ -40,6 +44,17 @@
         "post-update-cmd": [
             "@composer bin all update --ansi",
             "@prefix-vendor"
+        ],
+        "make-vendor-dir": [
+            "mkdir -p vendor",
+            "mkdir -p vendor-prefixed"
+        ],
+        "clean-vendor-dir": [
+            "rm -rf vendor/ vendor-prefixed/",
+            "@make-vendor-dir"
+        ],
+        "bin": [
+            "echo 'bin not installed'"
         ],
         "cs": [
             "php vendor-bin/php-dev-tools/vendor/bin/php-cs-fixer fix -v --diff --dry-run"
@@ -50,12 +65,16 @@
         "prefix-vendor": [
             "vendor-bin/prestashop-build-tools/vendor/bin/prefix-vendor"
         ],
-        "build-module": [
+        "build-assets": [
             "yarn",
-            "yarn mix --production",
-            "@composer install --no-dev --no-scripts --quiet",
-            "@prefix-vendor",
+            "yarn mix --production"
+        ],
+        "build-module": [
             "@cs-fix",
+            "@build-assets",
+            "@clean-vendor-dir",
+            "@composer install --no-dev --no-scripts --quiet",
+            "@prefix-vendor -m",
             "vendor-bin/prestashop-build-tools/vendor/bin/build-module -a"
         ]
     },
