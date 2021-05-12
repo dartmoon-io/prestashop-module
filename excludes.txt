@@ -17,5 +17,5 @@ package.json
 yarn.lock
 webpack.mix.js
 .php_cs.cache
-.php_cs.dist
+.php-cs-fixer.dist.php
 copyright.txt
