@@ -24,25 +24,25 @@
 *}
 
 <div class="panel">
-	<h3><i class="icon icon-credit-card"></i> {l s='MY_MODULE_NAME' mod='MY_MODULE_NAME'}</h3>
+	<h3><i class="icon icon-credit-card"></i> {l s='{DISPLAY_NAME}' mod='{NAME}'}</h3>
 	<p>
-		<strong>{l s='Here is my new generic module!' mod='MY_MODULE_NAME'}</strong><br />
-		{l s='Thanks to PrestaShop, now I have a great module.' mod='MY_MODULE_NAME'}<br />
-		{l s='I can configure it using the following configuration form.' mod='MY_MODULE_NAME'}
+		<strong>{l s='Here is my new generic module!' mod='{NAME}'}</strong><br />
+		{l s='Thanks to PrestaShop, now I have a great module.' mod='{NAME}'}<br />
+		{l s='I can configure it using the following configuration form.' mod='{NAME}'}
 	</p>
 	<br />
 	<p>
-		{l s='This module will boost your sales!' mod='MY_MODULE_NAME'}
+		{l s='This module will boost your sales!' mod='{NAME}'}
 	</p>
 </div>
 
 <div class="panel">
-	<h3><i class="icon icon-tags"></i> {l s='Documentation' mod='MY_MODULE_NAME'}</h3>
+	<h3><i class="icon icon-tags"></i> {l s='Documentation' mod='{NAME}'}</h3>
 	<p>
-		&raquo; {l s='You can get a PDF documentation to configure this module' mod='MY_MODULE_NAME'} :
+		&raquo; {l s='You can get a PDF documentation to configure this module' mod='{NAME}'} :
 		<ul>
-			<li><a href="#" target="_blank">{l s='English' mod='MY_MODULE_NAME'}</a></li>
-			<li><a href="#" target="_blank">{l s='French' mod='MY_MODULE_NAME'}</a></li>
+			<li><a href="#" target="_blank">{l s='English' mod='{NAME}'}</a></li>
+			<li><a href="#" target="_blank">{l s='French' mod='{NAME}'}</a></li>
 		</ul>
 	</p>
 </div>

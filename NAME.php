@@ -33,13 +33,13 @@ if (file_exists($autoloadPath)) {
     require_once $autoloadPath;
 }
 
-class MY_MODULE_NAME extends Module
+class CLASS_NAME extends Module
 {
     protected $config_form = false;
 
     public function __construct()
     {
-        $this->name = 'MY_MODULE_NAME';
+        $this->name = '{NAME}';
         $this->tab = 'others';
         $this->version = '1.0.0';
         $this->author = 'Dartmoon';
@@ -52,8 +52,8 @@ class MY_MODULE_NAME extends Module
 
         parent::__construct();
 
-        $this->displayName = $this->l('MY_MODULE_NAME');
-        $this->description = $this->l('MY_MODULE_DESCRIPTION');
+        $this->displayName = $this->l('{DISPLAY_NAME}');
+        $this->description = $this->l('{DESCRIPTION}');
 
         $this->confirmUninstall = $this->l('Are you sure you want to uninstall this module?');
 
@@ -82,7 +82,7 @@ class MY_MODULE_NAME extends Module
         /*
          * If values have been submitted in the form, process.
          */
-        if (((bool) Tools::isSubmit('submitMY_MODULE_NAMEModule')) == true) {
+        if (((bool) Tools::isSubmit('submit{CLASS_NAME}Module')) == true) {
             $this->postProcess();
         }
 
@@ -107,7 +107,7 @@ class MY_MODULE_NAME extends Module
         $helper->allow_employee_form_lang = Configuration::get('PS_BO_ALLOW_EMPLOYEE_FORM_LANG', 0);
 
         $helper->identifier = $this->identifier;
-        $helper->submit_action = 'submitMY_MODULE_NAMEModule';
+        $helper->submit_action = 'submit{CLASS_NAME}Module';
         $helper->currentIndex = $this->context->link->getAdminLink('AdminModules', false)
             . '&configure=' . $this->name . '&tab_module=' . $this->tab . '&module_name=' . $this->name;
         $helper->token = Tools::getAdminTokenLite('AdminModules');
@@ -136,7 +136,7 @@ class MY_MODULE_NAME extends Module
                     [
                         'type' => 'switch',
                         'label' => $this->l('Live mode'),
-                        'name' => 'MY_MODULE_NAME_LIVE_MODE',
+                        'name' => '{NAME_UPPERCASE}_LIVE_MODE',
                         'is_bool' => true,
                         'desc' => $this->l('Use this module in live mode'),
                         'values' => [
@@ -157,12 +157,12 @@ class MY_MODULE_NAME extends Module
                         'type' => 'text',
                         'prefix' => '<i class="icon icon-envelope"></i>',
                         'desc' => $this->l('Enter a valid email address'),
-                        'name' => 'MY_MODULE_NAME_ACCOUNT_EMAIL',
+                        'name' => '{NAME_UPPERCASE}_ACCOUNT_EMAIL',
                         'label' => $this->l('Email'),
                     ],
                     [
                         'type' => 'password',
-                        'name' => 'MY_MODULE_NAME_ACCOUNT_PASSWORD',
+                        'name' => '{NAME_UPPERCASE}_ACCOUNT_PASSWORD',
                         'label' => $this->l('Password'),
                     ],
                 ],
@@ -179,9 +179,9 @@ class MY_MODULE_NAME extends Module
     protected function getConfigFormValues()
     {
         return [
-            'MY_MODULE_NAME_LIVE_MODE' => Configuration::get('MY_MODULE_NAME_LIVE_MODE', true),
-            'MY_MODULE_NAME_ACCOUNT_EMAIL' => Configuration::get('MY_MODULE_NAME_ACCOUNT_EMAIL', 'contact@prestashop.com'),
-            'MY_MODULE_NAME_ACCOUNT_PASSWORD' => Configuration::get('MY_MODULE_NAME_ACCOUNT_PASSWORD', null),
+            '{NAME_UPPERCASE}_LIVE_MODE' => Configuration::get('{NAME_UPPERCASE}_LIVE_MODE', true),
+            '{NAME_UPPERCASE}_ACCOUNT_EMAIL' => Configuration::get('{NAME_UPPERCASE}_ACCOUNT_EMAIL', 'contact@prestashop.com'),
+            '{NAME_UPPERCASE}_ACCOUNT_PASSWORD' => Configuration::get('{NAME_UPPERCASE}_ACCOUNT_PASSWORD', null),
         ];
     }
 
