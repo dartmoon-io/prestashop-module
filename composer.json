@@ -54,9 +54,6 @@
         "post-create-project-cmd": [
             "vendor-bin/prestashop-build-tools/vendor/bin/configure-module"
         ],
-        "test-post-create-project-cmd": [
-            "vendor-bin/prestashop-build-tools/vendor/bin/configure-module"
-        ],
         "make-vendor-dir": [
             "mkdir -p vendor",
             "mkdir -p vendor-prefixed"
