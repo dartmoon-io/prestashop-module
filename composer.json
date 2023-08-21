@@ -16,7 +16,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "NAMESPACE\\": "src/"
+            "___NAMESPACE___\\": "src/"
         },
         "classmap": [
             "vendor",
@@ -95,8 +95,8 @@
             "bin-links": false
         },
         "prestashop-build-tools": {
-            "name": "NAME",
-            "prefix": "VENDOR_PREFIX"
+            "name": "___NAME___",
+            "prefix": "___VENDOR_PREFIX___"
         }
     }
 }

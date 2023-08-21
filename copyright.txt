@@ -1,5 +1,5 @@
 /**
- * Copyright (c) YEAR AUTHOR
+ * Copyright (c) ___YEAR___ ___AUTHOR___
  *
  * If you wish to customize this module for your needs,
  * please contact the authors first for more information.
@@ -7,7 +7,7 @@
  * It's not allowed selling, reselling or other ways to share
  * this file or any other module files without author permission.
  *
- * @author    AUTHOR
- * @copyright Copyright (c) YEAR AUTHOR
+ * @author    ___AUTHOR___
+ * @copyright Copyright (c) ___YEAR___ ___AUTHOR___
  * @license   You only can use this module, nothing more!
  */
