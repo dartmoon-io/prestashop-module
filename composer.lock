@@ -4,8 +4,138 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6c0d2f88ecb0c6659d7d0f676b7169e5",
-    "packages": [],
+    "content-hash": "7a29f22d1ee38134078fe892163075e6",
+    "packages": [
+        {
+            "name": "dartmoon/prestashop-hooks",
+            "version": "v0.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dartmoon-io/prestashop-hooks.git",
+                "reference": "57b1e7ecc2726460c0ee45b9d301d77e6b455600"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dartmoon-io/prestashop-hooks/zipball/57b1e7ecc2726460c0ee45b9d301d77e6b455600",
+                "reference": "57b1e7ecc2726460c0ee45b9d301d77e6b455600",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Dartmoon\\Hooks\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dartmoon",
+                    "email": "hello@dartmoon.io",
+                    "homepage": "https://dartmoon.io"
+                },
+                {
+                    "name": "Alessandro Pasqualini",
+                    "email": "alessandro@dartmoon.io"
+                }
+            ],
+            "description": "PrestaShop Hooks made OOP",
+            "support": {
+                "issues": "https://github.com/dartmoon-io/prestashop-hooks/issues",
+                "source": "https://github.com/dartmoon-io/prestashop-hooks/tree/v0.2.0"
+            },
+            "time": "2021-08-11T14:55:19+00:00"
+        },
+        {
+            "name": "dartmoon/prestashop-tabmanager",
+            "version": "v0.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dartmoon-io/prestashop-tabmanager.git",
+                "reference": "4ddb235dee288c0f9684ae3970a934f597acf5d1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dartmoon-io/prestashop-tabmanager/zipball/4ddb235dee288c0f9684ae3970a934f597acf5d1",
+                "reference": "4ddb235dee288c0f9684ae3970a934f597acf5d1",
+                "shasum": ""
+            },
+            "require": {
+                "dartmoon/prestashop-utils": "^0.1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Dartmoon\\TabManager\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dartmoon",
+                    "email": "hello@dartmoon.io",
+                    "homepage": "https://dartmoon.io"
+                },
+                {
+                    "name": "Alessandro Pasqualini",
+                    "email": "alessandro@dartmoon.io"
+                }
+            ],
+            "description": "Library to easy the creation of backoffice menu tabs for PrestaShop",
+            "support": {
+                "issues": "https://github.com/dartmoon-io/prestashop-tabmanager/issues",
+                "source": "https://github.com/dartmoon-io/prestashop-tabmanager/tree/v0.1.2"
+            },
+            "time": "2021-04-17T06:28:54+00:00"
+        },
+        {
+            "name": "dartmoon/prestashop-utils",
+            "version": "v0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dartmoon-io/prestashop-utils.git",
+                "reference": "b12bfb03fb3d4aefcc690303e9bd3c8d3e27302f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dartmoon-io/prestashop-utils/zipball/b12bfb03fb3d4aefcc690303e9bd3c8d3e27302f",
+                "reference": "b12bfb03fb3d4aefcc690303e9bd3c8d3e27302f",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Dartmoon\\Utils\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dartmoon",
+                    "email": "hello@dartmoon.io",
+                    "homepage": "https://dartmoon.io"
+                },
+                {
+                    "name": "Alessandro Pasqualini",
+                    "email": "alessandro@dartmoon.io"
+                }
+            ],
+            "description": "PrestaShop Utils is a collection of utils for basic operations for PrestaShop",
+            "support": {
+                "issues": "https://github.com/dartmoon-io/prestashop-utils/issues",
+                "source": "https://github.com/dartmoon-io/prestashop-utils/tree/v0.1.0"
+            },
+            "time": "2021-03-20T08:47:52+00:00"
+        }
+    ],
     "packages-dev": [
         {
             "name": "bamarni/composer-bin-plugin",
@@ -65,5 +195,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.3.0"
 }
