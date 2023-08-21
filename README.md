@@ -9,89 +9,17 @@ Simplify the creation of PrestaShop modules unleashing the power of PHP packages
 composer create-project dartmoon/prestashop-module yourmodulename
 ```
 
+This will trigger the customization command: just answer the questions!
+
 For the module name we suggest not to use hyphens or other other "word-delimiting" characters.
 
-2. Rename the main file from `MY_MODULE_NAME.php` to `yourmodulename.php`. Remeber that this file must be named **exactly** as the module folder.
-
-3. Open the `your-module-name.php` file and rename the class name of your module as `YourModuleName`.
-
-4. Adjust the properties inside the constructor of the main class of the module.
-
-```php
-class YourModuleName extends Module
-{
-    // ...
-
-    public function __construct()
-    {
-        $this->name = 'yourmodulename'; // Change this
-        $this->tab = 'others'; // Change this
-        $this->version = '1.0.0'; // Change this
-        $this->author = 'Dartmoon'; // Change this
-        $this->need_instance = 1;
-
-        /*
-         * Set $this->bootstrap to true if your module is compliant with bootstrap (PrestaShop 1.6)
-         */
-        $this->bootstrap = true;
-
-        parent::__construct();
-
-        $this->displayName = $this->l('Your new amazing module'); // Change this
-        $this->description = $this->l('Your new amazing module description'); // Change this
-
-        $this->confirmUninstall = $this->l('Are you sure you want to uninstall this module?');
-
-        $this->ps_versions_compliancy = ['min' => '1.7', 'max' => _PS_VERSION_];
-        $this->requirements = [
-        ];
-    }
-
-    //...
-}
-```
-
-5. Adjust the config inside the `composer.json` file:
-
-```json
-//...
-
-"autoload": {
-    "psr-4": {
-        "YourCompanyName\\YourModuleName\\": "src/" // Change this
-    },
-    // ...
-},
-
-// ...
-
-"extra": {
-    // ...
-
-    "prestashop-build-tools": {
-        "name": "yourmodulename", // This is the name used when building the module
-        "prefix": "YourCompanyName\\YourModuleName\\Vendor" // Prefix used for all installed PHP dependencies
-    }
-}
-
-// ...
-```
-
-6. Reinstall vendor to use the new namespace.
-
-```bash
-composer update
-````
-
-7. Install the module inside PrestaShop (execute the following command from the root of your PrestaShop installation)
+2. Install the module inside PrestaShop (execute the following command from the root of your PrestaShop installation)
 
 ```bash
 php bin/console prestashop:module install yourmodulename
 ```
 
 Done!
-
-Don't worry, we are working on an installer to simplify all these steps!
 
 ## Usage
 Write your module as you would have done before!
