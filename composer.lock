@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "532051f0b0bc8f2251e8564d9a85a635",
+    "content-hash": "27459e0127cab3d7d9f93d28334c4e5e",
     "packages": [
         {
             "name": "dartmoon/prestashop-hooks",
