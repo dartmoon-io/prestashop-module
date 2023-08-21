@@ -16,7 +16,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "NAMESPACE": "src/"
+            "NAMESPACE\\": "src/"
         },
         "classmap": [
             "vendor",
