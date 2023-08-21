@@ -24,7 +24,7 @@
         ]
     },
     "require": {
-        "dartmoon/prestashop-hooks": "^0.2.0",
+        "dartmoon/prestashop-hooks": "^0.3.0",
         "dartmoon/prestashop-tabmanager": "^0.1.2"
     },
     "require-dev": {
