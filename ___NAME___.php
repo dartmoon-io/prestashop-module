@@ -23,6 +23,10 @@
 *  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *  International Registered Trademark & Property of PrestaShop SA
 */
+
+use ___VENDOR_PREFIX___\Dartmoon\Hooks\Traits\HasHookDispatcher;
+use ___VENDOR_PREFIX___\Dartmoon\TabManager\Facades\TabManager;
+
 if (!defined('_PS_VERSION_')) {
     exit;
 }
@@ -35,7 +39,23 @@ if (file_exists($autoloadPath)) {
 
 class ___CLASS_NAME___ extends Module
 {
+    use HasHookDispatcher;
+
     protected $config_form = false;
+
+    /**
+     * Hook classes
+     */
+    protected $hooks = [
+        //
+    ];
+    
+    /**
+     * Menu tabs
+     */
+    protected $menu_tabs = [
+        //
+    ];
 
     public function __construct()
     {
@@ -60,17 +80,30 @@ class ___CLASS_NAME___ extends Module
         $this->ps_versions_compliancy = ['min' => '1.7', 'max' => _PS_VERSION_];
         $this->requirements = [
         ];
+
+        // Let's init the hook dispatcher
+        $this->initHookDispatcher();
     }
 
     public function install()
     {
-        return parent::install() &&
-            $this->registerHook('header') &&
-            $this->registerHook('backOfficeHeader');
+        if (
+            parent::install()
+            && TabManager::install($this->menu_tabs, $this)
+            && $this->registerHook($this->getHookDispatcher()->getAvailableHooks())
+        ) {
+            include(dirname(__FILE__) . '/sql/install.php');
+
+            return true;
+        }
+
+        return false;
     }
 
     public function uninstall()
     {
+        TabManager::uninstallForModule($this);
+        include(dirname(__FILE__) . '/sql/uninstall.php');
         return parent::uninstall();
     }
 
@@ -197,23 +230,23 @@ class ___CLASS_NAME___ extends Module
         }
     }
 
-    /**
-     * Add the CSS & JavaScript files you want to be loaded in the BO.
-     */
-    public function hookBackOfficeHeader()
-    {
-        if (Tools::getValue('module_name') == $this->name) {
-            $this->context->controller->addJS($this->_path . 'views/js/back.js');
-            $this->context->controller->addCSS($this->_path . 'views/css/back.css');
-        }
-    }
+    // /**
+    //  * Add the CSS & JavaScript files you want to be loaded in the BO.
+    //  */
+    // public function hookBackOfficeHeader()
+    // {
+    //     if (Tools::getValue('module_name') == $this->name) {
+    //         $this->context->controller->addJS($this->_path . 'views/js/back.js');
+    //         $this->context->controller->addCSS($this->_path . 'views/css/back.css');
+    //     }
+    // }
 
-    /**
-     * Add the CSS & JavaScript files you want to be added on the FO.
-     */
-    public function hookHeader()
-    {
-        $this->context->controller->addJS($this->_path . '/views/js/front.js');
-        $this->context->controller->addCSS($this->_path . '/views/css/front.css');
-    }
+    // /**
+    //  * Add the CSS & JavaScript files you want to be added on the FO.
+    //  */
+    // public function hookHeader()
+    // {
+    //     $this->context->controller->addJS($this->_path . '/views/js/front.js');
+    //     $this->context->controller->addCSS($this->_path . '/views/css/front.css');
+    // }
 }
