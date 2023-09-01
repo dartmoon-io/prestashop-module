@@ -24,6 +24,8 @@
 *  International Registered Trademark & Property of PrestaShop SA
 */
 
+use ___NAMESPACE___\Hooks\BackOfficeAssetsHook;
+use ___NAMESPACE___\Hooks\FrontOfficeAssetsHook;
 use ___VENDOR_PREFIX___\Dartmoon\Hooks\Traits\HasHookDispatcher;
 use ___VENDOR_PREFIX___\Dartmoon\TabManager\Facades\TabManager;
 
@@ -47,14 +49,30 @@ class ___CLASS_NAME___ extends Module
      * Hook classes
      */
     protected $hooks = [
-        //
+        BackOfficeAssetsHook::class,
+        FrontOfficeAssetsHook::class,
     ];
     
     /**
      * Menu tabs
      */
     protected $menu_tabs = [
-        //
+        // [
+        //     'name' => 'Your menu tab parent tab',
+        //     'class_name' => 'YOURMENUTABPARENTTAB',
+        //     'route_name' => '',
+        //     'parent_class_name' => '',
+        //     'icon' => '',
+        //     'visible' => true,
+        // ],
+        // [
+        //     'name' => 'Your menu tab',
+        //     'class_name' => 'AdminYourModuleYourAction', // The class name of your module admin controller must be 'AdminYourModuleYourActionController'
+        //     'route_name' => '',
+        //     'parent_class_name' => 'YOURMENUTABPARENTTAB',
+        //     'icon' => '',
+        //     'visible' => true,
+        // ],
     ];
 
     public function __construct()
@@ -229,24 +247,4 @@ class ___CLASS_NAME___ extends Module
             Configuration::updateValue($key, Tools::getValue($key));
         }
     }
-
-    // /**
-    //  * Add the CSS & JavaScript files you want to be loaded in the BO.
-    //  */
-    // public function hookBackOfficeHeader()
-    // {
-    //     if (Tools::getValue('module_name') == $this->name) {
-    //         $this->context->controller->addJS($this->_path . 'views/js/back.js');
-    //         $this->context->controller->addCSS($this->_path . 'views/css/back.css');
-    //     }
-    // }
-
-    // /**
-    //  * Add the CSS & JavaScript files you want to be added on the FO.
-    //  */
-    // public function hookHeader()
-    // {
-    //     $this->context->controller->addJS($this->_path . '/views/js/front.js');
-    //     $this->context->controller->addCSS($this->_path . '/views/css/front.css');
-    // }
 }
