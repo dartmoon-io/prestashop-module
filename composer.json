@@ -52,6 +52,9 @@
             "@prefix-vendor"
         ],
         "post-create-project-cmd": [
+            "@configure-module"
+        ],
+        "configure-module": [
             "vendor-bin/prestashop-build-tools/vendor/bin/configure-module"
         ],
         "make-vendor-dir": [
