@@ -69,10 +69,10 @@
             "echo 'bin not installed'"
         ],
         "cs": [
-            "php vendor-bin/php-dev-tools/vendor/bin/php-cs-fixer fix -v --diff --dry-run"
+            "php vendor-bin/prestashop-build-tools/vendor/bin/php-cs-fixer fix -v --diff --dry-run"
         ],
         "cs-fix": [
-            "php vendor-bin/php-dev-tools/vendor/bin/php-cs-fixer fix -v --diff"
+            "php vendor-bin/prestashop-build-tools/vendor/bin/php-cs-fixer fix -v --diff"
         ],
         "prefix-vendor": [
             "vendor-bin/prestashop-build-tools/vendor/bin/prefix-vendor"
