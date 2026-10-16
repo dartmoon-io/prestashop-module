@@ -1,0 +1,55 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+$root = dirname(__DIR__);
+$command = $argv[1] ?? 'help';
+$options = [];
+try {
+    for ($i = 2; $i < count($argv); ++$i) {
+        if (!str_starts_with($argv[$i], '--')) {
+            throw new InvalidArgumentException('Expected --option=value, got ' . $argv[$i]);
+        }
+        [$key, $value] = array_pad(explode('=', substr($argv[$i], 2), 2), 2, true);
+        $options[$key] = $value;
+    }
+    $allowed = match ($command) {
+        'setup' => ['name', 'namespace', 'display-name', 'author', 'version', 'description', 'toolkit-path', 'no-interaction'],
+        'build' => ['output-dir', 'assets', 'no-zip'],
+        'doctor' => ['prestashop-root'],
+        'help' => [],
+        default => throw new InvalidArgumentException('Unknown command ' . $command),
+    };
+    foreach ($options as $key => $value) {
+        if (!in_array($key, $allowed, true)) {
+            throw new InvalidArgumentException('Unknown option --' . $key);
+        }
+        if (!in_array($key, ['no-interaction', 'assets', 'no-zip'], true) && $value === true) {
+            throw new InvalidArgumentException('Use --' . $key . '=value');
+        }
+    }
+    if ($command === 'setup') {
+        require $root . '/tools/src/Setup.php';
+        \Dartmoon\ModuleTools\Setup::run($root, $options);
+        exit(0);
+    }
+    if ($command === 'help') {
+        echo "php bin/module setup [--name=mymodule --namespace='Acme\\MyModule' --toolkit-path=../prestashop-module-toolkit --no-interaction]\n";
+        echo "php bin/module build [--output-dir=dist] [--assets] [--no-zip]\n";
+        echo "php bin/module doctor [--prestashop-root=/path/to/shop]\n";
+        exit(0);
+    }
+    if (!is_file($root . '/tools/vendor/autoload.php')) {
+        throw new RuntimeException('Install build tools first: composer tools:install');
+    }
+    require $root . '/tools/vendor/autoload.php';
+    if ($command === 'build') {
+        (new \Dartmoon\ModuleTools\Builder($root))->build($options);
+    } else {
+        \Dartmoon\ModuleTools\Doctor::run($root, $options);
+    }
+} catch (Throwable $exception) {
+    fwrite(STDERR, $exception->getMessage() . "\n");
+    exit(1);
+}

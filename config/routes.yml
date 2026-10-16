@@ -1,0 +1,7 @@
+examplemodule_admin_example:
+  path: /examplemodule/example
+  methods: [GET]
+  defaults:
+    _controller: 'Dartmoon\ExampleModule\Controllers\Admin\ExampleController::index'
+    _legacy_controller: AdminExamplemoduleExample
+    _legacy_link: AdminExamplemoduleExample

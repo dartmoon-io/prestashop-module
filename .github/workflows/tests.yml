@@ -1,0 +1,30 @@
+name: Module pipeline
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: ['8.2', '8.3', '8.4', '8.5']
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: prestashop-module
+      # Available after the toolkit repository is published; local tests use
+      # the sibling toolkit checkout without needing a remote.
+      - uses: actions/checkout@v4
+        with:
+          repository: dartmoon-io/prestashop-module-toolkit
+          path: prestashop-module-toolkit
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: zip
+          coverage: none
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: prestashop-module/.nvmrc
+      - run: composer install --working-dir=prestashop-module/tools --no-interaction --prefer-dist
+      - run: php prestashop-module/tools/tests/run.php
+      - run: npm ci && npm run build && npm run test:assets
+        working-directory: prestashop-module
