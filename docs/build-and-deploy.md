@@ -90,13 +90,15 @@ Review the resulting `tools/prestashop-symbols.json` and rerun integration check
 
 The default allowlist includes the entry file, app/src, config, controllers,
 views, database/sql, upgrade, translations, mails, override, public, supported
-logo files, .htaccess, LICENSE and README. Runtime dependencies are installed separately.
+logo files, .htaccess, index.php, composer.json, copyright.txt, LICENSE and README.
+Runtime dependencies are installed separately with `--no-dev`.
 Tools, docs, source assets and arbitrary project files are outside that allowlist.
 Dependency development directories and `.env` files are removed during packaging.
 Package resource files and license notices are retained.
 
-To ship another runtime directory, merge an `include` array into the existing
-`extra.prestashop-module` metadata:
+To ship additional root files or directories, edit the `include` list in
+`composer.json` under `extra.prestashop-module`. It is empty by default and
+extends (rather than replaces) the runtime allowlist:
 
 ```json
 {
@@ -104,15 +106,25 @@ To ship another runtime directory, merge an `include` array into the existing
         "prestashop-module": {
             "name": "mymodule",
             "namespace": "Acme\\MyModule",
-            "include": ["fixtures"]
+            "include": ["resources", "runtime-*.json", "data/**/*.json"]
         }
     }
 }
 ```
 
-Use module-relative paths. The builder rejects paths outside the project and
-unsafe included files. Changes to Composer metadata may require refreshing the
-lock with `composer update --lock --no-scripts` before a strict build.
+Entries are glob patterns relative to the module root and keep matched paths in
+their original location in the release. Literal files and directories still work;
+matched directories are copied recursively. `*`, `?` and character classes such as
+`[ab]` match within a path segment; `**` matches across directory levels, including
+zero levels, and `{one,two}` matches alternatives. Wildcards do not match leading
+dots unless explicitly specified. Unmatched patterns are skipped. Glob discovery
+skips standard development directories such as `tools/`, `_dev/`, `vendor/`,
+`node_modules/` and `dist/`. Setup preserves the list. Only list production
+resources, not development tools, credentials or build output.
+Unlisted root files/directories remain excluded from both the ZIP and unpacked
+release. The builder rejects paths outside the project and unsafe included files.
+Changes to Composer metadata may require refreshing the lock with
+`composer update --lock --no-scripts` before a strict build.
 
 ## Install and upgrade in the shop
 

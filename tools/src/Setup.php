@@ -77,7 +77,7 @@ final class Setup
         $composer['description'] = $description;
         $composer['authors'] = [['name' => $author]];
         $composer['autoload']['psr-4'] = [$namespace . '\\' => 'app/'];
-        $composer['extra']['prestashop-module'] = ['name' => $name, 'namespace' => $namespace];
+        $composer['extra']['prestashop-module'] = array_replace($metadata, ['name' => $name, 'namespace' => $namespace]);
         $config = require $root . '/config/module.php';
         $config = array_replace($config, ['name' => $name, 'display_name' => $display, 'author' => $author, 'version' => $version, 'description' => $description]);
         $adminController = 'Admin' . ucfirst($name) . 'Example';

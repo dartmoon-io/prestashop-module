@@ -115,6 +115,20 @@ try {
         $check(file_get_contents($policy . '/previous.zip') === 'last good archive', 'Failed publication lost the previous archive.');
     }
 
+    $includeRoot = $temp . '/include-validation';
+    $filesystem->mkdir($includeRoot);
+    $filesystem->symlink($policy . '/previous-module', $includeRoot . '/external-file.txt');
+    $copySource = new ReflectionMethod(Dartmoon\ModuleTools\Builder::class, 'copySource');
+    foreach (['../*.json', $root . '/*.json', '[', '', 'external-*.txt'] as $pattern) {
+        $writeJson($includeRoot . '/composer.json', ['extra' => ['prestashop-module' => ['name' => 'validation', 'include' => [$pattern]]]]);
+        try {
+            $copySource->invoke(new Dartmoon\ModuleTools\Builder($includeRoot), $temp . '/invalid-stage', $includeRoot . '/dist');
+            throw new LogicException('Expected an unsafe include pattern to be rejected.');
+        } catch (InvalidArgumentException $exception) {
+            $check(str_contains($exception->getMessage(), 'include'), 'Invalid include pattern was not identified.');
+        }
+    }
+
     $filesystem->mkdir($temp . '/dependency/src');
     $writeJson($temp . '/dependency/composer.json', [
         'name' => 'test/build-fixture', 'version' => '1.0.0', 'type' => 'library',
@@ -134,6 +148,26 @@ try {
         // The tools' generated loader uses its original path; no development files
         // are shipped in the production module itself.
         $filesystem->symlink($root . '/tools/vendor', $directory . '/tools/vendor');
+        $includes = ['resources', 'runtime.json', 'runtime-*.json', './data/**/*.json', 'bundles/*/assets/', 'schema?.[xy]ml', '{extra-one,extra-two}.txt', 'missing/**/*.txt', 'tools/**/*.php', '_dev/**/*.js', 'dist/**/*'];
+        $manifest = $json($directory . '/composer.json');
+        $manifest['extra']['prestashop-module']['include'] = $includes;
+        $writeJson($directory . '/composer.json', $manifest);
+        $filesystem->mkdir([$directory . '/resources/nested', $directory . '/unlisted', $directory . '/data/nested/deep', $directory . '/bundles/example/assets/nested']);
+        file_put_contents($directory . '/resources/nested/payload.txt', 'runtime resource');
+        file_put_contents($directory . '/runtime.json', '{"runtime":true}');
+        file_put_contents($directory . '/notes.txt', 'development notes');
+        file_put_contents($directory . '/unlisted/payload.txt', 'unlisted resource');
+        $globFiles = [
+            'runtime-extra.json', 'data/root.json', 'data/nested/child.json',
+            'data/nested/deep/leaf.json', 'bundles/example/assets/nested/payload.txt',
+            'schema1.xml', 'extra-one.txt', 'extra-two.txt',
+        ];
+        foreach ($globFiles as $path) {
+            file_put_contents($directory . '/' . $path, 'glob resource');
+        }
+        foreach (['runtime-extra.txt', 'data/nested/ignored.txt', 'schema12.xml', 'extra-three.txt'] as $path) {
+            file_put_contents($directory . '/' . $path, 'unmatched resource');
+        }
         $before = hash_file('sha256', $directory . '/composer.json');
         $run([PHP_BINARY, 'bin/module', 'setup', '--no-interaction', '--name=bad-name'], $directory, false);
         $check($before === hash_file('sha256', $directory . '/composer.json'), 'Invalid setup mutated the manifest.');
@@ -156,6 +190,7 @@ try {
         $check(str_contains(file_get_contents($directory . '/config/routes.yml'), $namespace . '\\Controllers\\Admin\\ExampleController::index'), 'Controller route namespace was not configured.');
         $check(str_contains(file_get_contents($directory . '/controllers/front/example.php'), 'class ' . ucfirst($name) . 'ExampleModuleFrontController'), 'Front controller class was not configured.');
         $manifest = $json($directory . '/composer.json');
+        $check($manifest['extra']['prestashop-module']['include'] === $includes, 'Setup discarded the release include list.');
         $manifest['repositories'][] = ['type' => 'path', 'url' => $temp . '/dependency', 'options' => ['symlink' => false]];
         $manifest['require']['test/build-fixture'] = '^1.0';
         $writeJson($directory . '/composer.json', $manifest);
@@ -183,6 +218,17 @@ try {
         $check(file_get_contents($dist . '/copyright.txt') === $copyright . "\n", 'Custom copyright file was not shipped.');
         $check(str_contains(file_get_contents($dist . '/app/Probe.php'), $copyright), 'Build stamping did not use the module copyright.');
         $check(str_contains(file_get_contents($dist . '/config/index.php'), $copyright), 'Build guards did not use the module copyright.');
+        $check(file_get_contents($dist . '/resources/nested/payload.txt') === 'runtime resource', 'An included directory was not shipped.');
+        $check(file_get_contents($dist . '/runtime.json') === '{"runtime":true}', 'An included root file was not shipped.');
+        foreach ($globFiles as $path) {
+            $check(file_get_contents($dist . '/' . $path) === 'glob resource', 'A glob match was not shipped: ' . $path);
+        }
+        $excluded = ['tools', 'bin', '_dev', 'docs', 'node_modules', '.github', '.env', 'composer.lock', 'package.json', 'package-lock.json', 'vite.config.js', 'notes.txt', 'unlisted', 'runtime-extra.txt', 'data/nested/ignored.txt', 'schema12.xml', 'extra-three.txt'];
+        foreach ($excluded as $path) {
+            $check(!file_exists($dist . '/' . $path), 'Development or unlisted path shipped: ' . $path);
+        }
+        $productionManifest = $json($dist . '/composer.json');
+        $check(!array_intersect(['require-dev', 'autoload-dev', 'scripts', 'repositories'], array_keys($productionManifest)), 'Development Composer metadata shipped.');
         foreach (Finder::create()->directories()->in($dist)->append([$dist]) as $shippedDirectory) {
             $check(is_file($shippedDirectory . '/index.php'), 'Missing directory guard: ' . $shippedDirectory);
         }
@@ -194,9 +240,18 @@ try {
         $check($firstFiles === iterator_count(Finder::create()->files()->ignoreDotFiles(false)->in($dist)), 'Repeated build accumulated generated files.');
         $zip = new ZipArchive();
         $check($zip->open($directory . '/dist/' . $name . '.zip') === true, 'Archive not generated.');
+        $check($zip->getFromName($name . '/resources/nested/payload.txt') === 'runtime resource', 'An included directory was not archived.');
+        $check($zip->getFromName($name . '/runtime.json') === '{"runtime":true}', 'An included root file was not archived.');
+        foreach ($globFiles as $path) {
+            $check($zip->getFromName($name . '/' . $path) === 'glob resource', 'A glob match was not archived: ' . $path);
+        }
+        foreach ($excluded as $path) {
+            $check($zip->locateName($name . '/' . $path) === false, 'An excluded path was archived: ' . $path);
+        }
         for ($i = 0; $i < $zip->numFiles; ++$i) {
             $entry = $zip->getNameIndex($i);
             $check(str_starts_with($entry, $name . '/'), 'Wrong ZIP root.');
+            $check(!in_array(explode('/', $entry)[1], $excluded, true), 'Development or unlisted path archived: ' . $entry);
             $check(!in_array(basename($entry), ['.php-cs-fixer.dist.php', '.gitignore', '.gitattributes', '.DS_Store'], true), 'Development metadata shipped: ' . $entry);
             $check(!preg_match('~(?:^|/)(?:tools|tests|node_modules|\.env|\.git)(?:/|$)~', $entry), 'Development file shipped: ' . $entry);
         }

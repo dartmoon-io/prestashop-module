@@ -12,6 +12,7 @@ namespace Dartmoon\ModuleTools;
 
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\Glob;
 use Symfony\Component\Process\Process;
 
 final class Builder
@@ -156,12 +157,34 @@ final class Builder
         // development directories from reaching the archive. Module-specific additions
         // can be declared in extra.prestashop-module.include.
         $manifest = json_decode(file_get_contents($this->root . '/composer.json'), true, 512, JSON_THROW_ON_ERROR);
-        $paths = array_merge([
+        $paths = [
             $manifest['extra']['prestashop-module']['name'] . '.php', 'composer.json',
             'app', 'src', 'config', 'controllers', 'views', 'database', 'sql', 'upgrade',
             'translations', 'mails', 'override', 'public', 'logo.png', 'logo.gif', 'logo.svg',
             'LICENSE', 'copyright.txt', 'README.md', '.htaccess', 'index.php',
-        ], $manifest['extra']['prestashop-module']['include'] ?? []);
+        ];
+        $patterns = [];
+        foreach ($manifest['extra']['prestashop-module']['include'] ?? [] as $pattern) {
+            if (!is_string($pattern) || $pattern === '' || str_contains($pattern, '..') || str_starts_with($pattern, '/')) {
+                throw new \InvalidArgumentException('Release includes must be module-relative paths or glob patterns without "..".');
+            }
+            if (strpbrk($pattern, '*?{[') === false) {
+                $paths[] = $pattern;
+                continue;
+            }
+            $regex = Glob::toRegex(preg_replace('~^(?:\./)+~', '', rtrim($pattern, '/')));
+            if (@preg_match($regex, '') === false) {
+                throw new \InvalidArgumentException('Invalid release include pattern: ' . $pattern);
+            }
+            $patterns[] = $regex;
+        }
+        if ($patterns !== []) {
+            foreach (Finder::create()->ignoreDotFiles(false)->in($this->root)
+                ->exclude(['vendor', 'node_modules', 'dist', '.git', 'tools', 'bin', '_dev', '.github', '.phpunit.cache', 'tests'])
+                ->path($patterns) as $match) {
+                $paths[] = $match->getRelativePathname();
+            }
+        }
         foreach (array_unique($paths) as $path) {
             $source = realpath($this->root . '/' . $path);
             if ($source === false) {

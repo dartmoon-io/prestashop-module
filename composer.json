@@ -42,7 +42,8 @@
     "extra": {
         "prestashop-module": {
             "name": "examplemodule",
-            "namespace": "Dartmoon\\ExampleModule"
+            "namespace": "Dartmoon\\ExampleModule",
+            "include": []
         }
     },
     "config": {
