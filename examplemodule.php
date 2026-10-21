@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Copyright (c) 2023-2026 Dartmoon S.r.l. <hello@dartmoon.io>
+ * SPDX-License-Identifier: MIT
+ * See LICENSE for the full license text.
+ */
+
 declare(strict_types=1);
 
 use Dartmoon\Config\Config;
@@ -31,7 +37,7 @@ class Examplemodule extends Module
         $this->tab = 'others';
         $this->bootstrap = true;
         $this->need_instance = 0;
-        $this->ps_versions_compliancy = ['min' => '9.2.0', 'max' => _PS_VERSION_];
+        $this->ps_versions_compliancy = $metadata['compatibility'];
         parent::__construct();
 
         $this->displayName = $metadata['display_name'];
@@ -48,7 +54,7 @@ class Examplemodule extends Module
         try {
             $hooks = $this->getHookDispatcher()->getAvailableHooks();
             if (($hooks !== [] && !$this->registerHook($hooks))
-                || !(new TabManager())->install($this->moduleConfig->get('module.tabs', []), $this)
+                || !$this->createTabManager()->install($this->moduleConfig->get('module.tabs', []), $this)
                 || !$this->runSql('install')) {
                 $this->uninstall();
 
@@ -64,7 +70,7 @@ class Examplemodule extends Module
 
     public function uninstall()
     {
-        if (!(new TabManager())->uninstallForModule($this) || !$this->runSql('uninstall')) {
+        if (!$this->createTabManager()->uninstallForModule($this) || !$this->runSql('uninstall')) {
             return false;
         }
 
@@ -74,6 +80,12 @@ class Examplemodule extends Module
     public function getContent()
     {
         return $this->fetch('module:' . $this->name . '/views/templates/admin/configure.tpl');
+    }
+
+    /** Override during lifecycle operations; the Symfony container may not be booted. */
+    protected function createTabManager(): TabManager
+    {
+        return new TabManager();
     }
 
     private function runSql(string $action): bool

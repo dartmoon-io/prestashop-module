@@ -62,7 +62,6 @@ host APIs or patch dynamic references, create `scoper.inc.php` at the module roo
 
 ```php
 <?php
-
 return [
     'exclude-namespaces' => ['OtherHost\\Api'],
     'patchers' => [
@@ -91,7 +90,7 @@ Review the resulting `tools/prestashop-symbols.json` and rerun integration check
 
 The default allowlist includes the entry file, app/src, config, controllers,
 views, database/sql, upgrade, translations, mails, override, public, supported
-logo files, LICENSE and README. Runtime dependencies are installed separately.
+logo files, .htaccess, LICENSE and README. Runtime dependencies are installed separately.
 Tools, docs, source assets and arbitrary project files are outside that allowlist.
 Dependency development directories and `.env` files are removed during packaging.
 Package resource files and license notices are retained.
@@ -137,3 +136,5 @@ Check the actual page, hooks, command, schema and tabs after deployment; do not
 rely only on a console exit code. Use a disposable shop when checking uninstall
 and installation rollback behavior. The boilerplate's
 [integration harness](troubleshooting.md#real-shop-integration) is an example.
+
+Run the [release verification workflow](release-policy.md#verify-and-publish) before publishing.

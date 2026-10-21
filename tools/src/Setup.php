@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Copyright (c) 2023-2026 Dartmoon S.r.l. <hello@dartmoon.io>
+ * SPDX-License-Identifier: MIT
+ * See LICENSE for the full license text.
+ */
+
 declare(strict_types=1);
 
 namespace Dartmoon\ModuleTools;
@@ -36,7 +42,7 @@ final class Setup
             throw new \InvalidArgumentException('Use a lowercase module name, 3–64 characters, starting with a letter; examplemodule is reserved for the skeleton.');
         }
         $namespace = $ask('namespace', 'PHP namespace', 'Dartmoon\\' . ucfirst($name));
-        if (count(explode('\\', $namespace)) < 2 || preg_match('/^Dartmoon\\\\(?:Assets|Config|Console|Hooks|TabManager|Utils)(?:\\\\|$)/i', $namespace)) {
+        if (count(explode('\\', $namespace)) < 2 || preg_match('/^Dartmoon\\\\(?:Assets|Config|Console|Controllers|Downloaders|Filters|Helpers|Hooks|Importers|Log|Renderers|TabManager|Utils|Support)(?:\\\\|$)/i', $namespace)) {
             throw new \InvalidArgumentException('Use a vendor and module namespace, outside the toolkit component namespaces.');
         }
         $reserved = array_fill_keys(explode(' ', 'abstract and array as bool break callable case catch class clone const continue declare default die do echo else elseif empty enddeclare endfor endforeach endif endswitch endwhile enum eval exit extends false final finally float fn for foreach from function global goto if implements include include_once instanceof insteadof int interface isset iterable list match mixed namespace never new null object or parent print private protected public readonly require require_once resource return self static string switch throw trait true try unset use var void while xor yield'), true);

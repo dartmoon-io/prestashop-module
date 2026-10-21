@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Copyright (c) 2023-2026 Dartmoon S.r.l. <hello@dartmoon.io>
+ * SPDX-License-Identifier: MIT
+ * See LICENSE for the full license text.
+ */
+
 declare(strict_types=1);
 
 // Maintainer utility. Parse a clean shop without booting it or touching its DB.
@@ -24,7 +30,9 @@ foreach (Finder::create()->files()->name('*.php')->in(array_map(static fn ($dir)
     $nodes = $traverser->traverse($parser->parse($file->getContents()) ?? []);
     foreach ($finder->find($nodes, static fn (Node $node) => $node instanceof Node\Stmt\ClassLike || $node instanceof Node\Stmt\Function_) as $node) {
         $name = isset($node->namespacedName) ? $node->namespacedName->toString() : null;
-        if (!$name || str_contains($name, '\\')) { continue; }
+        if (!$name || str_contains($name, '\\')) {
+            continue;
+        }
         $key = $node instanceof Node\Stmt\Function_ ? 'functions' : 'classes';
         $symbols[$key][$name] = true;
         if ($key === 'classes' && str_ends_with($name, 'Core')) {
@@ -34,13 +42,17 @@ foreach (Finder::create()->files()->name('*.php')->in(array_map(static fn ($dir)
     foreach ($finder->findInstanceOf($nodes, Node\Expr\FuncCall::class) as $node) {
         if ($node->name instanceof Node\Name && strtolower($node->name->toString()) === 'define' && isset($node->args[0]) && $node->args[0]->value instanceof Node\Scalar\String_) {
             $name = $node->args[0]->value->value;
-            if (preg_match('/^[A-Za-z_][A-Za-z0-9_]*$/D', $name)) { $symbols['constants'][$name] = true; }
+            if (preg_match('/^[A-Za-z_][A-Za-z0-9_]*$/D', $name)) {
+                $symbols['constants'][$name] = true;
+            }
         }
     }
 }
 // Host libraries such as Smarty also expose global classes through Composer.
 foreach (array_keys(require $shop . '/vendor/composer/autoload_classmap.php') as $class) {
-    if (!str_contains($class, '\\')) { $symbols['classes'][$class] = true; }
+    if (!str_contains($class, '\\')) {
+        $symbols['classes'][$class] = true;
+    }
 }
 foreach ($symbols as &$values) {
     $values = array_values(array_filter(array_keys($values), static fn (string $name): bool => (bool) preg_match('/^[A-Za-z_][A-Za-z0-9_]*$/D', $name)));

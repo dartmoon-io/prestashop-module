@@ -127,3 +127,10 @@ its library dependencies.
 See PrestaShop's [admin controller](https://devdocs.prestashop-project.org/9/modules/concepts/controllers/admin-controllers/),
 [front controller](https://devdocs.prestashop-project.org/9/modules/concepts/controllers/front-controllers/)
 and [menu tab](https://devdocs.prestashop-project.org/9/modules/concepts/controllers/admin-controllers/tabs/) references.
+
+## Native ObjectModel forms and lists
+
+For legacy admin pages based on ObjectModel CRUD, the toolkit also provides
+[`AbstractAdminController`, extended form/list helpers and product lookup](https://github.com/dartmoon-io/prestashop-module-toolkit/blob/main/docs/libraries/helpers.md).
+The Symfony example above remains suitable for custom pages; choose the native
+helper base when working with existing legacy controller conventions.

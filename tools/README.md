@@ -55,3 +55,8 @@ The test installs the fixture, checks SQL/hooks/tabs and console discovery,
 uninstalls it, verifies cleanup, and removes its shop directory. It refuses to
 replace an existing directory or an already installed test module. A cleanup
 failure retains the directory for diagnosis.
+
+Release policy lives in [the release guide](../docs/release-policy.md).
+`ReleasePolicy` stamps only supported project-owned source and creates safe guards;
+`Builder` stages runtime code and rolls back failed publication. `composer quality`
+checks project source and tooling using official PrestaShop PHP rules.

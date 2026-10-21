@@ -16,7 +16,7 @@ See the [documentation index](docs/README.md) for the complete boilerplate guide
 
 ## Requirements
 
-- PrestaShop 9.2+, PHP 8.1+ at runtime.
+- PrestaShop 9.2.0 (verified), PHP 8.1+ at runtime.
 - PHP 8.2+ with Zip and Composer 2 to develop/build. Tools have their own
   `tools/composer.json` and lock, isolated from module runtime dependencies.
 - Node 20.19+ (20.x) or 22.12+ and npm only if compiling JS/SCSS assets;

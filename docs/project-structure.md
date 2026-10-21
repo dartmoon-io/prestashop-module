@@ -10,6 +10,7 @@ mymodule.php
 app/
   Commands/
   Controllers/Admin/ExampleController.php
+  Filters/Greeting.php
   Hooks/
 config/
   module.php
@@ -74,7 +75,7 @@ and override entry classes while scoping their dependency references.
 | --- | --- |
 | `composer.json` → `extra.prestashop-module` | Technical name and application namespace used by tools |
 | `composer.json` → `autoload.psr-4` | Application namespace-to-directory mapping |
-| `config/module.php` | Name, display label, version, author, description and menu tabs |
+| `config/module.php` | Name, display label, version, author, description, explicit compatibility bounds and menu tabs |
 | `config/services.php` | Symfony service definitions and command discovery |
 | `config/routes.yml` | Symfony back-office routes and legacy permission identifiers |
 | Additional `config/*.php` | Array-based application defaults read by the toolkit Config library |
@@ -88,7 +89,8 @@ command names and an application namespace.
 The starter service file loads `app/Commands/` with autowiring and
 autoconfiguration, excluding `index.php` directory guards. Additional service
 classes must be registered or loaded explicitly. It also defines a module-local
-Config service with ID `mymodule.config` and the public example admin controller.
+Config service with ID `mymodule.config`, a module-owned greeting filter injected
+into `FilterService`, and the public example admin controller.
 See [Controller examples](controllers.md) for routing, menu registration and
 front-office conventions.
 

@@ -1,6 +1,6 @@
 {
     "name": "dartmoon/prestashop-module",
-    "description": "A module skeleton for PrestaShop 9.2 and later",
+    "description": "A module skeleton for PrestaShop 9.2",
     "type": "project",
     "license": "MIT",
     "authors": [
@@ -29,7 +29,15 @@
         "doctor": "@php bin/module doctor",
         "build": "@php bin/module build",
         "build-module": "@build",
-        "test": "@php tools/tests/run.php"
+        "test": "@php tools/tests/run.php",
+        "quality": "@php tools/vendor/bin/php-cs-fixer fix --dry-run --diff",
+        "quality:fix": "@php tools/vendor/bin/php-cs-fixer fix",
+        "headers": "@php tools/headers.php",
+        "verify": [
+            "@quality",
+            "@test",
+            "@php bin/module build --assets"
+        ]
     },
     "extra": {
         "prestashop-module": {

@@ -1,16 +1,22 @@
 <?php
 
+/**
+ * Copyright (c) 2023-2026 Dartmoon S.r.l. <hello@dartmoon.io>
+ * SPDX-License-Identifier: MIT
+ * See LICENSE for the full license text.
+ */
+
 declare(strict_types=1);
 
 namespace Dartmoon\ModuleTools;
 
-use Symfony\Component\Finder\Finder;
 use PhpParser\Node;
 use PhpParser\NodeFinder;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\ParserFactory;
 use PhpParser\PrettyPrinter\Standard;
+use Symfony\Component\Finder\Finder;
 
 final class ScoperConfig
 {

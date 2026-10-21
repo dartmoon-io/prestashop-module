@@ -115,3 +115,11 @@ fixture. A failed cleanup retains the module directory for investigation.
 For your own module, validate equivalent behavior using its actual pages,
 controllers, schema and external integrations. Rerun shop integration when
 adopting another PrestaShop version or changing dependency integration.
+
+## Running tooling tests from a generated module
+
+The setup regression suite requires an unconfigured boilerplate. Set
+`TEMPLATE_PATH=/absolute/path/to/prestashop-module` when running `composer test`
+or `composer verify` from a configured module. Set `TOOLKIT_PATH` to the local
+toolkit source checkout too. Both variables select test inputs; production
+modules require neither variable. See the release policy for the complete command.

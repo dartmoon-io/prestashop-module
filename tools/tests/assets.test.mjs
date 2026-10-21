@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) 2023-2026 Dartmoon S.r.l. <hello@dartmoon.io>
+ * SPDX-License-Identifier: MIT
+ * See LICENSE for the full license text.
+ */
 import assert from 'node:assert/strict';
 import {spawn} from 'node:child_process';
 import {copyFile, mkdir, mkdtemp, readFile, readdir, rm, symlink, writeFile} from 'node:fs/promises';

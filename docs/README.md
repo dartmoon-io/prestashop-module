@@ -26,8 +26,20 @@ For detailed component APIs, see the
 [Config](https://github.com/dartmoon-io/prestashop-module-toolkit/blob/main/docs/libraries/config.md),
 [Console](https://github.com/dartmoon-io/prestashop-module-toolkit/blob/main/docs/libraries/console.md),
 [Hooks](https://github.com/dartmoon-io/prestashop-module-toolkit/blob/main/docs/libraries/hooks.md),
-[TabManager](https://github.com/dartmoon-io/prestashop-module-toolkit/blob/main/docs/libraries/tab-manager.md)
+[TabManager](https://github.com/dartmoon-io/prestashop-module-toolkit/blob/main/docs/libraries/tab-manager.md),
+[Filters](https://github.com/dartmoon-io/prestashop-module-toolkit/blob/main/docs/libraries/filters.md),
+[Downloaders](https://github.com/dartmoon-io/prestashop-module-toolkit/blob/main/docs/libraries/downloaders.md),
+[Logging](https://github.com/dartmoon-io/prestashop-module-toolkit/blob/main/docs/libraries/logging.md),
+[Helpers and legacy controllers](https://github.com/dartmoon-io/prestashop-module-toolkit/blob/main/docs/libraries/helpers.md),
+[Catalog and image importers](https://github.com/dartmoon-io/prestashop-module-toolkit/blob/main/docs/libraries/importers.md),
+[Renderers](https://github.com/dartmoon-io/prestashop-module-toolkit/blob/main/docs/libraries/renderers.md)
 and [Utils](https://github.com/dartmoon-io/prestashop-module-toolkit/blob/main/docs/libraries/utils.md).
 
 These folders belong to their respective repositories. No workspace-level
 documentation files are required.
+
+See [release policy and quality gates](release-policy.md) for licensing, scoping,
+protection, compatibility, packaging and Marketplace review.
+
+The [local ecosystem verification report](ecosystem-verification.md) records the
+checked environment, API changes, commands, demo and external validation limits.

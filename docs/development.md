@@ -67,7 +67,6 @@ Return SQL queries from `database/install.php`, for example:
 
 ```php
 <?php
-
 return [
     'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'mymodule_item` (
         `id_item` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -148,7 +147,8 @@ return AssetManager::forModule($this->module)->render([
 Use `url($entry)` when you need an individual public URL. See the toolkit's
 [Assets guide](https://github.com/dartmoon-io/prestashop-module-toolkit/blob/main/docs/libraries/assets.md).
 Use the canonical `displayHeader` name rather than its legacy `header` alias.
-Back-office assets are restricted to this module's configuration page. Hooks
+The back-office header hook serves only this module's configuration page; the
+Symfony example controller supplies its own back assets to Twig. Hooks
 return no asset tags when no manifest exists, so PHP-only modules work without
 an asset build. See [Vite's backend integration guide](https://vite.dev/guide/backend-integration).
 
@@ -186,3 +186,9 @@ Use the matching `1.1.0` version and `upgrade/upgrade-1.1.0.php` filename.
 The builder preserves PrestaShop's global upgrade functions. Build and deploy
 the release, then use the shop's module upgrade operation. See
 [build and deploy](build-and-deploy.md) for the full release workflow.
+
+The shipped `app/Filters/Greeting.php` demonstrates a module-owned implementation:
+`config/services.php` supplies it to the toolkit `FilterService`, which is injected
+into `ExampleCommand`. Override the module's `createHookGroup()` or
+`createTabManager()` factories when supplying lifecycle collaborators before the
+Symfony container is booted. See the toolkit extension guide for each component.

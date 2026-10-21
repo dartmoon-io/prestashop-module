@@ -1,6 +1,12 @@
 #!/usr/bin/env php
 <?php
 
+/**
+ * Copyright (c) 2023-2026 Dartmoon S.r.l. <hello@dartmoon.io>
+ * SPDX-License-Identifier: MIT
+ * See LICENSE for the full license text.
+ */
+
 declare(strict_types=1);
 
 $root = dirname(__DIR__);
@@ -31,7 +37,7 @@ try {
     }
     if ($command === 'setup') {
         require $root . '/tools/src/Setup.php';
-        \Dartmoon\ModuleTools\Setup::run($root, $options);
+        Dartmoon\ModuleTools\Setup::run($root, $options);
         exit(0);
     }
     if ($command === 'help') {
@@ -45,9 +51,9 @@ try {
     }
     require $root . '/tools/vendor/autoload.php';
     if ($command === 'build') {
-        (new \Dartmoon\ModuleTools\Builder($root))->build($options);
+        (new Dartmoon\ModuleTools\Builder($root))->build($options);
     } else {
-        \Dartmoon\ModuleTools\Doctor::run($root, $options);
+        Dartmoon\ModuleTools\Doctor::run($root, $options);
     }
 } catch (Throwable $exception) {
     fwrite(STDERR, $exception->getMessage() . "\n");

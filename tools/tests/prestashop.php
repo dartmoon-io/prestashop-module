@@ -1,6 +1,14 @@
 <?php
 
+/**
+ * Copyright (c) 2023-2026 Dartmoon S.r.l. <hello@dartmoon.io>
+ * SPDX-License-Identifier: MIT
+ * See LICENSE for the full license text.
+ */
+
 declare(strict_types=1);
+
+ini_set('zend.exception_ignore_args', '1');
 
 // Optional integration test. Run only against a disposable shop:
 // php tools/tests/prestashop.php /path/to/shop /path/to/dist/dmframeworktest
@@ -29,6 +37,7 @@ $filesystem = new Filesystem();
 $temp = tempnam(sys_get_temp_dir(), 'dm-shop-test-');
 file_put_contents($temp, <<<'PHP'
 <?php
+ini_set('zend.exception_ignore_args', '1');
 require getenv('DM_TEST_SHOP') . '/config/config.inc.php';
 $mode = $argv[1];
 $check = static function ($condition, $message) { if (!$condition) { throw new RuntimeException($message); } };
@@ -149,7 +158,10 @@ $run = static function (array $command, bool $mustSucceed = true) use ($shop, $e
     if ($mustSucceed && !$process->isSuccessful()) {
         throw new RuntimeException($process->getCommandLine() . "\n" . $process->getOutput() . $process->getErrorOutput());
     }
-    if ($process->isSuccessful()) { echo $process->getOutput(); }
+    if ($process->isSuccessful()) {
+        echo $process->getOutput();
+    }
+
     return $process;
 };
 $console = [PHP_BINARY, '-d', 'memory_limit=1G', $shop . '/bin/console'];

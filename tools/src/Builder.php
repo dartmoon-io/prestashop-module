@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Copyright (c) 2023-2026 Dartmoon S.r.l. <hello@dartmoon.io>
+ * SPDX-License-Identifier: MIT
+ * See LICENSE for the full license text.
+ */
+
 declare(strict_types=1);
 
 namespace Dartmoon\ModuleTools;
@@ -7,7 +13,6 @@ namespace Dartmoon\ModuleTools;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\Process;
-use ZipArchive;
 
 final class Builder
 {
@@ -48,45 +53,15 @@ final class Builder
         try {
             $this->run($this->composer(['validate', '--strict', '--no-check-publish']), $this->root);
             $this->copySource($stage, $output);
+            ReleasePolicy::stamp($stage);
             // Resolve local workspace repositories from the original module, not /tmp.
             // Locks keep the same URL; Composer resolves relative path URLs against cwd.
             // Install through COMPOSER_VENDOR_DIR into the stage without mutating the source.
             $env = ['COMPOSER_VENDOR_DIR' => $stage . '/vendor', 'COMPOSER_MIRROR_PATH_REPOS' => '1'];
             $this->run($this->composer(['install', '--no-dev', '--no-scripts', '--no-plugins', '--prefer-dist', '--no-interaction']), $this->root, $env);
             $this->pruneDependencyDevelopmentFiles($stage);
-            $override = $this->root . '/scoper.inc.php';
-            if (is_file($override)) {
-                $custom = require $override;
-                if (!is_array($custom)) {
-                    throw new \RuntimeException('scoper.inc.php must return an array of overrides.');
-                }
-            }
-            // Run PHP-Scoper via its supported CLI. Do not depend on its internal Container API.
-            $configPath = $temp . '/scoper.php';
-            // A small bridge loads the same code and optional overrides in the CLI process.
-            $bridge = '<?php require ' . var_export($this->root . '/tools/vendor/autoload.php', true) . ';' . "\n";
-            $bridge .= '$config = \\Dartmoon\\ModuleTools\\ScoperConfig::forModule(' . var_export($stage, true) . ');' . "\n";
-            if (is_file($override)) {
-                $bridge .= '$custom = require ' . var_export($override, true) . ';' . "\n";
-                $bridge .= 'foreach ($custom as $key => $value) { $config[$key] = in_array($key, ["exclude-namespaces", "exclude-classes", "exclude-functions", "exclude-constants", "patchers", "exclude-files"], true) ? array_merge($config[$key] ?? [], $value) : $value; }' . "\n";
-            }
-            $bridge .= 'return $config;';
-            file_put_contents($configPath, $bridge);
-            $this->run([PHP_BINARY, $this->root . '/tools/vendor/bin/php-scoper', 'add-prefix', '--config=' . $configPath, '--output-dir=' . $scoped, '--force', '--no-interaction'], $stage);
-
-            // Composer must regenerate autoload.php AND autoload_files.php from scoped
-            // dependency metadata. Never classmap an unscoped and a scoped vendor together.
-            $scopedManifest = json_decode(file_get_contents($scoped . '/composer.json'), true, 512, JSON_THROW_ON_ERROR);
-            unset($scopedManifest['require-dev'], $scopedManifest['autoload-dev'], $scopedManifest['scripts'], $scopedManifest['repositories']);
-            $scopedManifest['config']['allow-plugins'] = false;
-            $scopedManifest['config']['autoloader-suffix'] = substr(hash('sha256', $metadata['namespace'] . '\\' . $name), 0, 32);
-            file_put_contents($scoped . '/composer.json', json_encode($scopedManifest, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR) . "\n");
-            // installed.json is excluded from scoping with vendor/composer. Copy fresh
-            // metadata, prefixing autoload entries via PHP-Scoper's rewritten package manifests.
-            $this->rebuildInstalledMetadata($stage, $scoped);
-            $this->run($this->composer(['dump-autoload', '--no-dev', '--no-scripts', '--no-plugins', '--optimize', '--strict-psr']), $scoped);
-            $this->isolateAutoloadFileIdentifiers($scoped, $metadata['namespace']);
-            $this->addDirectoryGuards($scoped);
+            $this->scopeDependencies($stage, $scoped, $temp, $metadata);
+            ReleasePolicy::protect($scoped);
             $destination = $output . '/' . $name;
             // Publish only after every command succeeds. Keep a previous artifact on failure.
             $pending = $output . '/.' . $name . '-' . bin2hex(random_bytes(6));
@@ -97,13 +72,11 @@ final class Builder
                     $this->zip($scoped, $archive, $name);
                     $this->filesystem->copy($archive, $pending . '.zip');
                 }
-                $this->filesystem->remove($destination);
-                $this->filesystem->rename($pending, $destination);
+                $replacements = [[$pending, $destination]];
                 if (!isset($options['no-zip'])) {
-                    // Same-filesystem rename keeps an earlier ZIP intact until the
-                    // complete replacement is ready, including on copy failures.
-                    $this->filesystem->rename($pending . '.zip', $output . '/' . $name . '.zip', true);
+                    $replacements[] = [$pending . '.zip', $output . '/' . $name . '.zip'];
                 }
+                $this->publish($replacements);
             } finally {
                 $this->filesystem->remove([$pending, $pending . '.zip']);
             }
@@ -111,6 +84,70 @@ final class Builder
         } finally {
             $this->filesystem->remove($temp);
         }
+    }
+
+    /** Transform staged dependencies and regenerate Composer's production loader. */
+    private function scopeDependencies(string $stage, string $scoped, string $temp, array $metadata): void
+    {
+        $override = $this->root . '/scoper.inc.php';
+        if (is_file($override)) {
+            $custom = require $override;
+            if (!is_array($custom)) {
+                throw new \RuntimeException('scoper.inc.php must return an array of overrides.');
+            }
+        }
+        // Run PHP-Scoper via its supported CLI. Do not depend on its internal Container API.
+        $configPath = $temp . '/scoper.php';
+        // A small bridge loads the same code and optional overrides in the CLI process.
+        $bridge = '<?php require ' . var_export($this->root . '/tools/vendor/autoload.php', true) . ';' . "\n";
+        $bridge .= '$config = \\Dartmoon\\ModuleTools\\ScoperConfig::forModule(' . var_export($stage, true) . ');' . "\n";
+        if (is_file($override)) {
+            $bridge .= '$custom = require ' . var_export($override, true) . ';' . "\n";
+            $bridge .= 'foreach ($custom as $key => $value) { $config[$key] = in_array($key, ["exclude-namespaces", "exclude-classes", "exclude-functions", "exclude-constants", "patchers", "exclude-files"], true) ? array_merge($config[$key] ?? [], $value) : $value; }' . "\n";
+        }
+        $bridge .= 'return $config;';
+        $this->filesystem->dumpFile($configPath, $bridge);
+        $this->run([PHP_BINARY, $this->root . '/tools/vendor/bin/php-scoper', 'add-prefix', '--config=' . $configPath, '--output-dir=' . $scoped, '--force', '--no-interaction'], $stage);
+
+        // Composer must regenerate autoload.php AND autoload_files.php from scoped
+        // dependency metadata. Never classmap an unscoped and a scoped vendor together.
+        $scopedManifest = json_decode(file_get_contents($scoped . '/composer.json'), true, 512, JSON_THROW_ON_ERROR);
+        unset($scopedManifest['require-dev'], $scopedManifest['autoload-dev'], $scopedManifest['scripts'], $scopedManifest['repositories']);
+        $scopedManifest['config']['allow-plugins'] = false;
+        $scopedManifest['config']['autoloader-suffix'] = substr(hash('sha256', $metadata['namespace'] . '\\' . $metadata['name']), 0, 32);
+        $this->filesystem->dumpFile($scoped . '/composer.json', json_encode($scopedManifest, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR) . "\n");
+        // installed.json is excluded from scoping with vendor/composer. Copy fresh
+        // metadata, prefixing autoload entries via PHP-Scoper's rewritten package manifests.
+        $this->rebuildInstalledMetadata($stage, $scoped);
+        $this->run($this->composer(['dump-autoload', '--no-dev', '--no-scripts', '--no-plugins', '--optimize', '--strict-psr']), $scoped);
+        $this->isolateAutoloadFileIdentifiers($scoped, $metadata['namespace']);
+    }
+
+    /** Restore both previous outputs if any final publication operation fails. */
+    private function publish(array $replacements): void
+    {
+        $backups = [];
+        $published = [];
+        try {
+            foreach ($replacements as [$pending, $destination]) {
+                if (file_exists($destination)) {
+                    $backup = $pending . '.previous';
+                    $this->filesystem->rename($destination, $backup);
+                    $backups[$destination] = $backup;
+                }
+                $this->filesystem->rename($pending, $destination);
+                $published[] = $destination;
+            }
+        } catch (\Throwable $exception) {
+            foreach (array_reverse($published) as $destination) {
+                $this->filesystem->remove($destination);
+            }
+            foreach ($backups as $destination => $backup) {
+                $this->filesystem->rename($backup, $destination);
+            }
+            throw $exception;
+        }
+        $this->filesystem->remove(array_values($backups));
     }
 
     private function copySource(string $stage, string $output): void
@@ -123,7 +160,7 @@ final class Builder
             $manifest['extra']['prestashop-module']['name'] . '.php', 'composer.json',
             'app', 'src', 'config', 'controllers', 'views', 'database', 'sql', 'upgrade',
             'translations', 'mails', 'override', 'public', 'logo.png', 'logo.gif', 'logo.svg',
-            'LICENSE', 'README.md',
+            'LICENSE', 'copyright.txt', 'README.md', '.htaccess', 'index.php',
         ], $manifest['extra']['prestashop-module']['include'] ?? []);
         foreach (array_unique($paths) as $path) {
             $source = realpath($this->root . '/' . $path);
@@ -136,6 +173,9 @@ final class Builder
             if (is_dir($source)) {
                 $finder = Finder::create()->files()->ignoreDotFiles(false)->in($source);
                 foreach ($finder as $file) {
+                    if (str_starts_with($file->getPathname(), $output . '/')) {
+                        continue;
+                    }
                     if ($file->isLink() || preg_match('~(?:^|/)(?:\.env(?:\..*)?|\.git|node_modules|vendor)(?:/|$)~', $file->getRelativePathname())) {
                         throw new \RuntimeException('Unsafe release file: ' . $file->getPathname());
                     }
@@ -160,7 +200,7 @@ final class Builder
             }
         }
         unset($package);
-        file_put_contents($file, json_encode($installed, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR));
+        $this->filesystem->dumpFile($file, json_encode($installed, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR));
     }
 
     private function pruneDependencyDevelopmentFiles(string $stage): void
@@ -170,7 +210,9 @@ final class Builder
         $installed = json_decode(file_get_contents($stage . '/vendor/composer/installed.json'), true, 512, JSON_THROW_ON_ERROR);
         foreach ($installed['packages'] as $package) {
             $base = $stage . '/vendor/' . $package['name'];
-            foreach (['vendor', 'node_modules', '.git', '.github', '.phpunit.cache', 'tests', 'Tests', 'test', 'phpunit.xml', 'phpunit.xml.dist'] as $path) {
+            foreach (['vendor', 'node_modules', '.git', '.github', '.phpunit.cache', 'tests', 'Tests', 'test', 'phpunit.xml', 'phpunit.xml.dist', '.phpunit.result.cache',
+                '.php-cs-fixer.dist.php', '.php-cs-fixer.php', '.php-cs-fixer.cache',
+                '.gitignore', '.gitattributes', '.editorconfig', '.DS_Store'] as $path) {
                 $this->filesystem->remove($base . '/' . $path);
             }
         }
@@ -192,7 +234,7 @@ final class Builder
                     static fn (array $match): string => "'" . md5($namespace . ':' . $match[1]) . "' =>",
                     file_get_contents($path)
                 );
-                file_put_contents($path, $content);
+                $this->filesystem->dumpFile($path, $content);
             }
         }
     }
@@ -200,33 +242,28 @@ final class Builder
     private function composer(array $arguments): array
     {
         $binary = getenv('COMPOSER_BINARY') ?: 'composer';
+
         // Composer exposes COMPOSER_BINARY when invoking a script from a PHAR.
         return array_merge(is_file($binary) ? [PHP_BINARY, $binary] : [$binary], $arguments);
     }
 
     private function run(array $command, string $cwd, array $env = []): void
     {
-        $process = new Process($command, $cwd, $env);
+        $process = new Process($command, $cwd, array_replace([
+            'COMPOSER' => 'composer.json',
+            'COMPOSER_VENDOR_DIR' => false,
+            'COMPOSER_BIN_DIR' => false,
+        ], $env));
         $process->setTimeout(600);
         $process->mustRun(static function (string $type, string $buffer): void {
             fwrite($type === Process::ERR ? STDERR : STDOUT, $buffer);
         });
     }
 
-    private function addDirectoryGuards(string $root): void
-    {
-        foreach (Finder::create()->directories()->in($root)->append([$root]) as $directory) {
-            $file = $directory . '/index.php';
-            if (!is_file($file)) {
-                file_put_contents($file, "<?php\n// Prevent directory listing. Safe to include during service discovery.\n");
-            }
-        }
-    }
-
     private function zip(string $source, string $file, string $name): void
     {
-        $zip = new ZipArchive();
-        if ($zip->open($file, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
+        $zip = new \ZipArchive();
+        if ($zip->open($file, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) !== true) {
             throw new \RuntimeException('Cannot create release archive.');
         }
         foreach (Finder::create()->files()->ignoreDotFiles(false)->in($source)->sortByName() as $item) {
@@ -234,7 +271,7 @@ final class Builder
             if (!$zip->addFile($item->getPathname(), $entry)) {
                 throw new \RuntimeException('Cannot add ' . $entry . ' to release archive.');
             }
-            $zip->setExternalAttributesName($entry, ZipArchive::OPSYS_UNIX, 0100644 << 16);
+            $zip->setExternalAttributesName($entry, \ZipArchive::OPSYS_UNIX, 0100644 << 16);
         }
         if (!$zip->close()) {
             throw new \RuntimeException('Cannot finish release archive.');

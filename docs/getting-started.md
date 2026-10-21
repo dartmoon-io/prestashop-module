@@ -6,7 +6,7 @@
 
 | Environment | Requirement |
 | --- | --- |
-| Module runtime | PrestaShop 9.2+, PHP 8.1+ |
+| Module runtime | PrestaShop 9.2.0 (verified), PHP 8.1+ |
 | Setup and builds | PHP 8.2+, Zip extension, Composer 2 |
 | Asset compilation | Node 20.19+ (20.x) or 22.12+ and npm; .nvmrc selects Node 22; optional for PHP-only modules |
 
