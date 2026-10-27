@@ -25,7 +25,7 @@ credentials and submits no form. Its template is
 
 ## Hooks
 
-Create a class under `app/Hooks/` extending
+Create a class under `src/Hooks/` extending
 `Dartmoon\Hooks\AbstractHookGroup`. Declare canonical hook names in `$hooks`
 and implement matching public methods accepting an array. Append the class to
 the root module's existing `$hooks` property.
@@ -42,7 +42,7 @@ The provided groups use `displayHeader` for front assets and
 
 ## Commands
 
-Create `app/Commands/YourCommand.php`, extending
+Create `src/Commands/YourCommand.php`, extending
 `Dartmoon\Console\AbstractCommand`. Use a unique name such as
 `mymodule:sync`, inject required services through the constructor, call the
 parent constructor, and implement `execute(): int`. The generated service
@@ -117,6 +117,10 @@ and Sass `@use` for styles and partials. Vite can share chunks and deduplicate
 identical stylesheets; its generated `views/assets/manifest.json` maps each
 source entry to the right output.
 
+The back-office JavaScript entry imports and initializes the toolkit's
+`resources/js/forms.js` helper for vector fields. Install Composer dependencies
+before building assets; Vite bundles the helper into the back-office output.
+
 The npm scripts call Vite directly:
 
 ```json
@@ -187,7 +191,7 @@ The builder preserves PrestaShop's global upgrade functions. Build and deploy
 the release, then use the shop's module upgrade operation. See
 [build and deploy](build-and-deploy.md) for the full release workflow.
 
-The shipped `app/Filters/Greeting.php` demonstrates a module-owned implementation:
+The shipped `src/Filters/Greeting.php` demonstrates a module-owned implementation:
 `config/services.php` supplies it to the toolkit `FilterService`, which is injected
 into `ExampleCommand`. Override the module's `createHookGroup()` or
 `createTabManager()` factories when supplying lifecycle collaborators before the

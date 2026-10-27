@@ -10,7 +10,7 @@ at baseline. No additional repository AGENTS.md files were found.
 | Repository | Responsibility and changes |
 | --- | --- |
 | prestashop-installer | CLI scaffolding only. Preserved real setup execution, local template/toolkit repositories, failure propagation and destination protection. Added real local-toolkit/substitution regression coverage, official formatting gates, headers, documentation and coordinated CI checkouts. |
-| prestashop-module | Module application in app/ (Commands, Controllers, Filters, Hooks), host configuration in config/, native controllers and templates, source assets in _dev/, separate build dependencies in tools/. Added module-owned Greeting filter injection, actual office JS/CSS examples, explicit compatibility bounds, lifecycle TabManager factory, modern page assets, ReleasePolicy, rollback-safe publication and complete release verification. |
+| prestashop-module | Module application in src/ (Commands, Controllers, Filters, Hooks), host configuration in config/, native controllers and templates, source assets in _dev/, separate build dependencies in tools/. Added module-owned Greeting filter injection, actual office JS/CSS examples, explicit compatibility bounds, lifecycle TabManager factory, modern page assets, ReleasePolicy, rollback-safe publication and complete release verification. |
 | prestashop-module-toolkit | Cohesive src/Assets, Config, Console, Controllers, Downloaders, Filters, Helpers, Hooks, Importers, Logging, Renderers, TabManager, Utils and Support components. PSR-4 remains Dartmoon\ → src/. Added scoped facade resolution, hook factories/contracts, injectable importer/translation policy and extensible assets. Component guides, exhaustive method signatures and extension documentation cover the final API. Removed docs/legacy-module-components.md after retaining useful testing/customization guidance. |
 
 No parallel application container, Laravel dependency or CloudSync integration
@@ -38,7 +38,7 @@ accepts FilterService/MultiLangText; TabManager accepts MultiLangText. Default
 construction remains usable. The module's createTabManager lifecycle factory
 works before the Symfony container is available.
 
-The greeting example is implemented in app/Filters/Greeting.php and registered
+The greeting example is implemented in src/Filters/Greeting.php and registered
 in config/services.php. ExampleCommand receives FilterService through the native
 container. Built execution prints “Custom module filter is active.”
 The default compatibility maximum is 9.2.0 rather than the running-shop constant.

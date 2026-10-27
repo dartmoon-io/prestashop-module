@@ -31,5 +31,5 @@ jobs:
       - run: composer quality
         working-directory: prestashop-module
       - run: php prestashop-module/tools/tests/run.php
-      - run: npm ci && npm run build && npm run test:assets
+      - run: npm ci && npm run test:assets
         working-directory: prestashop-module

@@ -14,7 +14,7 @@ in the back-office sidebar. The page links to the front-office example.
 
 | File | Purpose |
 | --- | --- |
-| `app/Controllers/Admin/ExampleController.php` | Symfony controller extending `PrestaShopAdminController` |
+| `src/Controllers/Admin/ExampleController.php` | Symfony controller extending `PrestaShopAdminController` |
 | `config/routes.yml` | GET route and its legacy permission/link identifiers |
 | `config/services.php` | Public controller service with Config injected |
 | `config/module.php` → `tabs` | Sidebar entry installed through TabManager |

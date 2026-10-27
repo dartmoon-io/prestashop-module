@@ -76,7 +76,7 @@ final class Setup
         $composer['name'] = 'module/' . $name;
         $composer['description'] = $description;
         $composer['authors'] = [['name' => $author]];
-        $composer['autoload']['psr-4'] = [$namespace . '\\' => 'app/'];
+        $composer['autoload']['psr-4'] = [$namespace . '\\' => 'src/'];
         $composer['extra']['prestashop-module'] = array_replace($metadata, ['name' => $name, 'namespace' => $namespace]);
         $config = require $root . '/config/module.php';
         $config = array_replace($config, ['name' => $name, 'display_name' => $display, 'author' => $author, 'version' => $version, 'description' => $description]);
@@ -96,7 +96,7 @@ final class Setup
         // Prepare every replacement before touching any file. No global text replacement
         // of user input into PHP strings or JSON: metadata is encoded in its target format.
         $files = [];
-        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($root . '/app', \FilesystemIterator::SKIP_DOTS));
+        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($root . '/src', \FilesystemIterator::SKIP_DOTS));
         foreach ($iterator as $file) {
             if ($file->isFile() && $file->getExtension() === 'php') {
                 $files[$file->getPathname()] = str_replace(['Dartmoon\\ExampleModule', 'examplemodule:'], [$namespace, $name . ':'], file_get_contents($file->getPathname()));

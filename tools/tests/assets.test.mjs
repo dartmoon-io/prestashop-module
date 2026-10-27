@@ -64,6 +64,42 @@ async function officeAssets(directory, side) {
   };
 }
 
+test('The boilerplate bundles and initializes toolkit forms when the DOM is ready', async () => {
+  const directory = await mkdtemp(join(tmpdir(), 'prestashop-forms-'));
+  const toolkit = process.env.TOOLKIT_PATH ?? join(root, '../prestashop-module-toolkit');
+  const document = globalThis.document;
+  try {
+    for (const path of ['_dev/js', '_dev/scss', 'vendor/dartmoon/prestashop-module-toolkit/resources/js']) {
+      await mkdir(join(directory, path), {recursive: true});
+    }
+    for (const path of ['vite.config.js', 'package.json', '_dev/js/front.js', '_dev/js/back.js', '_dev/scss/front.scss', '_dev/scss/back.scss']) {
+      await copyFile(join(root, path), join(directory, path));
+    }
+    await copyFile(join(toolkit, 'resources/js/forms.js'), join(directory, 'vendor/dartmoon/prestashop-module-toolkit/resources/js/forms.js'));
+    await symlink(join(root, 'node_modules'), join(directory, 'node_modules'), 'junction');
+    const production = await launch(directory).finished;
+    assert.equal(production.code, 0, production.output);
+    const asset = await officeAssets(directory, 'back');
+    assert.match(asset.script, /data-dartmoon-vector/);
+
+    for (const readyState of ['loading', 'complete']) {
+      const listeners = new Map();
+      globalThis.document = {readyState, addEventListener: (event, listener) => listeners.set(event, listener)};
+      await import(`${pathToFileURL(asset.scriptPath)}?readyState=${readyState}`);
+      if (readyState === 'loading') {
+        assert.equal(listeners.has('input'), false);
+        assert.equal(typeof listeners.get('DOMContentLoaded'), 'function');
+        listeners.get('DOMContentLoaded')();
+      }
+      assert.equal(typeof listeners.get('input'), 'function');
+    }
+  } finally {
+    if (document === undefined) delete globalThis.document;
+    else globalThis.document = document;
+    await rm(directory, {recursive: true, force: true});
+  }
+});
+
 test('Vite builds four entries, loads JS modules and watches JS/SCSS dependencies', {timeout: 90000}, async () => {
   const directory = await mkdtemp(join(tmpdir(), 'prestashop-vite-'));
   let watcher;

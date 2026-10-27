@@ -184,17 +184,18 @@ try {
         $config = require $directory . '/config/module.php';
         $check($config['display_name'] === 'O\'Reilly "Demo"', 'Metadata quoting was not preserved.');
         $check(str_contains(file_get_contents($directory . '/config/services.php'), str_replace('\\', '\\\\', $namespace)), 'DI namespace was not configured.');
-        $check(str_contains(file_get_contents($directory . '/app/Commands/ExampleCommand.php'), $name . ':hello'), 'Command name was not configured.');
+        $check(str_contains(file_get_contents($directory . '/src/Commands/ExampleCommand.php'), $name . ':hello'), 'Command name was not configured.');
         $check($config['tabs'][0]['class_name'] === 'Admin' . ucfirst($name) . 'Example', 'Example tab was not configured.');
         $check($config['tabs'][0]['route_name'] === $name . '_admin_example', 'Example route name was not configured.');
         $check(str_contains(file_get_contents($directory . '/config/routes.yml'), $namespace . '\\Controllers\\Admin\\ExampleController::index'), 'Controller route namespace was not configured.');
         $check(str_contains(file_get_contents($directory . '/controllers/front/example.php'), 'class ' . ucfirst($name) . 'ExampleModuleFrontController'), 'Front controller class was not configured.');
         $manifest = $json($directory . '/composer.json');
+        $check($manifest['autoload']['psr-4'] === [$namespace . '\\' => 'src/'], 'Application autoload path was not configured.');
         $check($manifest['extra']['prestashop-module']['include'] === $includes, 'Setup discarded the release include list.');
         $manifest['repositories'][] = ['type' => 'path', 'url' => $temp . '/dependency', 'options' => ['symlink' => false]];
         $manifest['require']['test/build-fixture'] = '^1.0';
         $writeJson($directory . '/composer.json', $manifest);
-        file_put_contents($directory . '/app/Probe.php', '<?php namespace ' . $namespace . '; use BuildFixture\\Widget; use function BuildFixture\\answer; class Probe { public static function run(): array { return [Widget::class, Widget::label(), answer(), \\Module::class, \\GlobalWidget::class, \\globalAnswer(), \\GLOBAL_FIXTURE_VALUE, \\pSQL("host"), \\_PS_VERSION_, \\BuildFixture\\autoloadAnswer()]; } }');
+        file_put_contents($directory . '/src/Probe.php', '<?php namespace ' . $namespace . '; use BuildFixture\\Widget; use function BuildFixture\\answer; class Probe { public static function run(): array { return [Widget::class, Widget::label(), answer(), \\Module::class, \\GlobalWidget::class, \\globalAnswer(), \\GLOBAL_FIXTURE_VALUE, \\pSQL("host"), \\_PS_VERSION_, \\BuildFixture\\autoloadAnswer()]; } }');
         $filesystem->mkdir([$directory . '/controllers/admin', $directory . '/controllers/front', $directory . '/upgrade']);
         file_put_contents($directory . '/controllers/admin/probe.php', '<?php class Admin' . ucfirst($name) . 'Controller extends ModuleAdminController { public function probe() { return \\BuildFixture\\Widget::label(); } }');
         file_put_contents($directory . '/controllers/front/probe.php', '<?php class ' . ucfirst($name) . 'ProbeModuleFrontController extends ModuleFrontController {}');
@@ -207,7 +208,7 @@ try {
         file_put_contents($directory . '/views/assets/front-' . $name . '.js', '// Asset isolation fixture');
         $run(['composer', 'install', '--no-interaction', '--prefer-dist'], $directory);
         $snapshot = [];
-        foreach (['composer.json', 'composer.lock', 'vendor/autoload.php', 'vendor/test/build-fixture/src/Widget.php', 'app/Probe.php'] as $path) {
+        foreach (['composer.json', 'composer.lock', 'vendor/autoload.php', 'vendor/test/build-fixture/src/Widget.php', 'src/Probe.php'] as $path) {
             $snapshot[$path] = hash_file('sha256', $directory . '/' . $path);
         }
         $run([PHP_BINARY, 'bin/module', 'build'], $directory);
@@ -216,7 +217,7 @@ try {
         }
         $dist = $directory . '/dist/' . $name;
         $check(file_get_contents($dist . '/copyright.txt') === $copyright . "\n", 'Custom copyright file was not shipped.');
-        $check(str_contains(file_get_contents($dist . '/app/Probe.php'), $copyright), 'Build stamping did not use the module copyright.');
+        $check(str_contains(file_get_contents($dist . '/src/Probe.php'), $copyright), 'Build stamping did not use the module copyright.');
         $check(str_contains(file_get_contents($dist . '/config/index.php'), $copyright), 'Build guards did not use the module copyright.');
         $check(file_get_contents($dist . '/resources/nested/payload.txt') === 'runtime resource', 'An included directory was not shipped.');
         $check(file_get_contents($dist . '/runtime.json') === '{"runtime":true}', 'An included root file was not shipped.');

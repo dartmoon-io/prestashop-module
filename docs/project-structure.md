@@ -7,7 +7,7 @@ PrestaShop's module entry point and conventional runtime folders.
 
 ```text
 mymodule.php
-app/
+src/
   Commands/
   Controllers/Admin/ExampleController.php
   Filters/Greeting.php
@@ -50,8 +50,8 @@ an empty project.
 
 ## Application code and the module entry
 
-Composer maps your application namespace to `app/`. For example,
-`Acme\MyModule\Services\ApiClient` belongs in `app/Services/ApiClient.php`.
+Composer maps your application namespace to `src/`. For example,
+`Acme\MyModule\Services\ApiClient` belongs in `src/Services/ApiClient.php`.
 Use normal `Dartmoon\…` imports for toolkit components. Generated dependency
 prefixes belong only to release artifacts.
 
@@ -65,7 +65,7 @@ behavior lives in application classes.
 
 Legacy front/admin controllers belong in PrestaShop's `controllers/front/` and
 `controllers/admin/` directories with the class/file conventions expected by
-the shop. Symfony application controllers can live under `app/`; define their
+the shop. Symfony application controllers can live under `src/`; define their
 routes and services separately. The release builder preserves global controller
 and override entry classes while scoping their dependency references.
 
@@ -86,7 +86,7 @@ the relevant module metadata edit; renaming an installed module requires a
 separate migration plan. Each module must use unique service IDs, console
 command names and an application namespace.
 
-The starter service file loads `app/Commands/` with autowiring and
+The starter service file loads `src/Commands/` with autowiring and
 autoconfiguration, excluding `index.php` directory guards. Additional service
 classes must be registered or loaded explicitly. It also defines a module-local
 Config service with ID `mymodule.config`, a module-owned greeting filter injected

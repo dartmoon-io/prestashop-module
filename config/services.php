@@ -18,8 +18,8 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services()->defaults()->autowire()->autoconfigure();
-    $services->load('Dartmoon\\ExampleModule\\Commands\\', '../app/Commands/')
-        ->exclude('../app/Commands/**/index.php');
+    $services->load('Dartmoon\\ExampleModule\\Commands\\', '../src/Commands/')
+        ->exclude('../src/Commands/**/index.php');
     $services->set(Greeting::class);
     $services->set(FilterService::class)->args([[service(Greeting::class)]]);
     $services->set('dartmoon.examplemodule.config', Config::class)->args([__DIR__]);

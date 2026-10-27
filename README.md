@@ -60,7 +60,7 @@ for installation details, metadata options and the direct Composer alternative.
 
 ```text
 mymodule.php          Global Module subclass required by PrestaShop
-app/                 PSR-4 application code (Hooks, Commands, Services, ...)
+src/                 PSR-4 application code (Hooks, Commands, Services, ...)
 config/module.php    Module metadata and tab definitions
 config/routes.yml    Back-office example route and permission identifiers
 config/services.php  Native PrestaShop 9.2 Symfony service configuration
